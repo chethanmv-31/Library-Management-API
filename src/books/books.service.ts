@@ -1,9 +1,9 @@
-import { CreateBookDto } from './dto/create-book-dto';
+import { CreateBookDto } from './dto/create-book.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { BooksRepository } from './book.repository';
 import { Book } from './book.entity';
 import { BookStock } from './books.model';
-import { UpdateBook } from './dto/update-book-dto';
+import { UpdateBook } from './dto/update-book.dto';
 
 @Injectable()
 export class BooksService {
@@ -32,8 +32,6 @@ export class BooksService {
 
   async deleteBookById(id: string): Promise<string> {
     const result = await this.bookRepository.delete({ id: id });
-
-    console.log('result', result);
 
     if (result.affected === 0) {
       throw new NotFoundException(`Task with id "${id}" is not found!`);
