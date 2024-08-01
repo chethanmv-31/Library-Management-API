@@ -28,7 +28,6 @@ export class AuthRepository extends Repository<User> {
     try {
       await this.save(user);
     } catch (error) {
-      console.log(error.code);
 
       if (error.code == '23505') {
         throw new ConflictException('Username already exists');

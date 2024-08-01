@@ -33,8 +33,6 @@ export class BooksService {
   async deleteBookById(id: string): Promise<string> {
     const result = await this.bookRepository.delete({ id: id });
 
-    console.log('result', result);
-
     if (result.affected === 0) {
       throw new NotFoundException(`Task with id "${id}" is not found!`);
     }
