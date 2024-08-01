@@ -7,7 +7,6 @@ export class CreateBookDto {
   @IsNotEmpty()
   authorName: string;
 
-
   @IsNotEmpty()
   price: string;
 

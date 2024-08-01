@@ -9,11 +9,11 @@ import {
   Post,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
-import { CreateBookDto } from './dto/create-book-dto';
+import { CreateBookDto } from './dto/create-book.dto';
 import { Book } from './book.entity';
 import { BookStock } from './books.model';
-import { UpdateBookSStock } from './dto/update-book-stock';
-import { UpdateBook } from './dto/update-book-dto';
+import { UpdateBookSStock } from './dto/update-book-stock.dto';
+import { UpdateBook } from './dto/update-book.dto';
 
 @Controller('books')
 export class BooksController {

@@ -2,11 +2,15 @@ import { Module } from '@nestjs/common';
 import { BooksModule } from './books/books.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { User } from './auth/user.entity';
+import { Book } from './books/book.entity';
+import { ConfigValidationSchema } from './schema-validation';
 
 @Module({
   imports: [
-    BooksModule,
     ConfigModule.forRoot({
+      // validationSchema: ConfigValidationSchema,
       envFilePath: [`.env.stage.${process.env.STAGE}`],
     }),
     TypeOrmModule.forRootAsync({
@@ -25,9 +29,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         };
       },
     }),
+    BooksModule,
+    AuthModule,
   ],
 
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}
