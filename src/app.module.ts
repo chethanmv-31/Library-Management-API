@@ -21,17 +21,16 @@ import { ConfigValidationSchema } from './schema-validation';
           type: 'postgres',
           autoLoadEntities: true,
           synchronize: true,
-          host: 'localhost',
-          port: 5432,
-          username: 'postgres',
-          password: 'postgres',
-          database: 'library-management',
+          host: configService.get('DB_HOST'),
+          port: configService.get('DB_PORT'),
+          username: configService.get('DB_USERNAME'),
+          password: configService.get('DB_PASSWORD'),
+          database: configService.get('DB_DATABASE'),
         };
       },
     }),
     BooksModule,
     AuthModule,
   ],
-
 })
 export class AppModule {}

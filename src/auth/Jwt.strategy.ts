@@ -15,7 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private configService: ConfigService,
   ) {
     super({
-      secretOrKey: 'Dd0FlAGw$z!DSuSmvFZEl0T&8O0ZZf9UhH#k9Mrm',
+      secretOrKey: configService.get('JWT_SECRETE_KEY'),
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     });
   }
@@ -23,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: JwtPayload): Promise<User> {
     const { username } = payload;
     const user = this.authRepository.findOne({ where: { username } });
-    
+
     if (!user) {
       throw new UnauthorizedException();
     }
