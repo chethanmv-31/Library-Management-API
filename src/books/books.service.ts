@@ -1,13 +1,21 @@
+import { AuthorService } from './../author/author.service';
+import { AuthorRepository } from 'src/author/author.repository';
 import { CreateBookDto } from './dto/create-book.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { BooksRepository } from './book.repository';
 import { Book } from './book.entity';
 import { BookStock } from './books.model';
-import { UpdateBook } from './dto/update-book.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
+import { CreateAuthorDto } from 'src/author/dto/create-author.dto';
+import { Author } from 'src/author/entities/author.entity';
 
 @Injectable()
 export class BooksService {
-  constructor(private bookRepository: BooksRepository) {}
+  constructor(
+    private bookRepository: BooksRepository,
+    private authorRepository: AuthorRepository,
+    private authorService: AuthorService,
+  ) {}
 
   async getAllBooks(): Promise<Book[]> {
     return await this.bookRepository.getBooks();
@@ -18,6 +26,7 @@ export class BooksService {
       where: {
         id: id,
       },
+      relations: ['author'],
     });
 
     if (!found)
@@ -26,8 +35,11 @@ export class BooksService {
     return found;
   }
 
-  createBook(createBookDto: CreateBookDto): Promise<Book> {
-    return this.bookRepository.createBook(createBookDto);
+  createBook(
+    createBookDto: CreateBookDto,
+    createAuthorDto: CreateAuthorDto,
+  ): Promise<Book> {
+    return this.bookRepository.createBook(createBookDto, createAuthorDto);
   }
 
   async deleteBookById(id: string): Promise<string> {
@@ -52,23 +64,39 @@ export class BooksService {
     }
   }
 
-  async updateBook(id: string, updateBook: UpdateBook): Promise<Book> {
+  async updateBook(
+    id: string,
+    updateBookDto: UpdateBookDto,
+    updateAuthorDto: CreateAuthorDto,
+  ): Promise<Book> {
     const {
       isbn_no,
       title,
       genre,
-      authorName,
       price,
       no_of_copies,
       stock,
       edition,
       language,
       publisher,
-    } = updateBook;
+    } = updateBookDto;
+
     const book = await this.getBookById(id);
+
+    const author = await this.authorRepository.findOne({
+      where: {
+        author_Name: book.author.author_Name,
+      },
+    });
+
     if (!book) {
       throw new NotFoundException(`Book with id "${id}" is not found`);
     } else {
+
+      
+      author.author_Name = updateAuthorDto.author_Name;
+      this.authorRepository.save(author);
+
       book.stock = stock;
       book.isbn_no = isbn_no;
       book.title = title;
@@ -78,6 +106,7 @@ export class BooksService {
       book.publisher = publisher;
       book.edition = edition;
       book.genre = genre;
+
       this.bookRepository.save(book);
       return book;
     }

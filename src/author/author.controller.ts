@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Logger,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { AuthorService } from './author.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { Author } from './entities/author.entity';
@@ -15,14 +24,24 @@ export class AuthorController {
 
   @Post('/create')
   createAuthor(@Body() createAuthorDto: CreateAuthorDto): Promise<Author> {
-    this.logger.verbose(
-      `createAuthorDto called ${JSON.stringify(createAuthorDto)}`,
-    );
     return this.authorService.createAuthor(createAuthorDto);
   }
 
   @Get('/:id')
   getAuthorById(@Param('id') id: number): Promise<Author> {
     return this.authorService.getAuthorById(id);
+  }
+
+  @Delete('/:id')
+  deleteAuthorById(@Param('id') id: number): Promise<string> {
+    return this.authorService.deleteAuthorById(id);
+  }
+
+  @Patch('/:id')
+  updateAuthorById(
+    @Param('id') id: number,
+    @Body() updateAuthorDto: CreateAuthorDto,
+  ): Promise<Author> {
+    return this.authorService.updateAuthorById(id, updateAuthorDto);
   }
 }

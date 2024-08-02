@@ -9,7 +9,7 @@ export const GetAuthorWithBooks = createParamDecorator(
 
     const authorRepository = getRepository(Author);
     const author = await authorRepository.findOne({
-      where: { author_Id: authorId },
+      where: { Id: authorId },
       relations: ['books'],
     });
 

@@ -1,9 +1,8 @@
 import { IsEnum } from 'class-validator';
 import { BookStock } from '../books.model';
 
-export class UpdateBook {
+export class UpdateBookDto {
   title: string;
-  authorName: string;
   price: string;
   no_of_copies: number;
   edition: string;
