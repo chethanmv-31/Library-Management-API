@@ -13,7 +13,8 @@ import { CreateBookDto } from './dto/create-book.dto';
 import { Book } from './book.entity';
 import { BookStock } from './books.model';
 import { UpdateBookSStock } from './dto/update-book-stock.dto';
-import { UpdateBook } from './dto/update-book.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
+import { CreateAuthorDto } from 'src/author/dto/create-author.dto';
 
 @Controller('books')
 export class BooksController {
@@ -31,9 +32,12 @@ export class BooksController {
   }
 
   @Post()
-  createBook(@Body() createBookDto: CreateBookDto): Promise<Book> {
+  createBook(
+    @Body() createBookDto: CreateBookDto,
+    @Body() createAuthorDto: CreateAuthorDto,
+  ): Promise<Book> {
     this.logger.verbose(`Book is created `);
-    return this.booksService.createBook(createBookDto);
+    return this.booksService.createBook(createBookDto, createAuthorDto);
   }
 
   @Delete('/:id')
@@ -53,8 +57,9 @@ export class BooksController {
   @Patch('/:id')
   updateBook(
     @Param('id') id: string,
-    @Body() updateBook: UpdateBook,
+    @Body() updateBookDto: UpdateBookDto,
+    @Body() updateAuthorDto: CreateAuthorDto,
   ): Promise<Book> {
-    return this.booksService.updateBook(id, updateBook);
+    return this.booksService.updateBook(id, updateBookDto, updateAuthorDto);
   }
 }

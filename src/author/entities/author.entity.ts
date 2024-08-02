@@ -4,10 +4,14 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Author {
   @PrimaryGeneratedColumn('rowid')
-  author_Id: number;
+  Id: number;
 
   @Column({ unique: true })
   author_Name: string;
 
-  
+  @OneToMany((_type) => Book, (book) => book.author, {
+    eager: false,
+    onDelete: 'SET NULL',
+  })
+  books: Book;
 }

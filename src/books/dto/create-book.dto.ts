@@ -4,8 +4,6 @@ export class CreateBookDto {
   @IsNotEmpty()
   title: string;
 
-  @IsNotEmpty()
-  authorName: string;
 
   @IsNotEmpty()
   price: string;
@@ -30,4 +28,5 @@ export class CreateBookDto {
 
   @IsNotEmpty()
   language: string;
+
 }

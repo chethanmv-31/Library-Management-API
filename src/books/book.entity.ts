@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { BookStock } from './books.model';
 import { User } from 'src/auth/user.entity';
 import { Exclude } from 'class-transformer';
+import { Author } from 'src/author/entities/author.entity';
 
 @Entity()
 export class Book {
@@ -19,9 +20,6 @@ export class Book {
 
   @Column()
   language: string;
-  
-  @Column()
-  authorName: string;
 
   @Column()
   edition: string;
@@ -44,4 +42,9 @@ export class Book {
   @ManyToOne((_type) => User, (user) => user.books, { eager: false })
   @Exclude({ toPlainOnly: true })
   user: User;
+
+  @ManyToOne((_type) => Author, (author) => author.books, {
+    eager: false,
+  })
+  author: Author;
 }
