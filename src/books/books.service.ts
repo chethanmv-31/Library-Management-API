@@ -72,7 +72,6 @@ export class BooksService {
       book.stock = stock;
       book.isbn_no = isbn_no;
       book.title = title;
-      book.authorName = authorName;
       book.no_of_copies = no_of_copies;
       book.language = language;
       book.price = price;
