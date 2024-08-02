@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { User } from './auth/user.entity';
 import { Book } from './books/book.entity';
 import { ConfigValidationSchema } from './schema-validation';
+import { AuthorModule } from './author/author.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ConfigValidationSchema } from './schema-validation';
     }),
     BooksModule,
     AuthModule,
+    AuthorModule,
   ],
 })
 export class AppModule {}
