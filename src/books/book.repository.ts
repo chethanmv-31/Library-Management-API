@@ -13,17 +13,30 @@ export class BooksRepository extends Repository<Book> {
   private logger = new Logger('Book Repository');
 
   async createBook(createBookDto: CreateBookDto): Promise<Book> {
-    const { authorName, copies, language, subject, title, topic, price } =
-      createBookDto;
+    const {
+      isbn_no,
+      title,
+      genre,
+      authorName,
+      price,
+      no_of_copies,
+      edition,
+      language,
+      publisher,
+      binding
+    } = createBookDto;
 
     const book = this.create({
-      authorName,
-      copies,
-      language,
-      subject,
+      isbn_no,
       title,
-      topic,
+      genre,
+      authorName,
       price,
+      no_of_copies,
+      edition,
+      language,
+      binding,
+      publisher,
       stock: BookStock.IN_STOCK,
     });
     await this.save(book);

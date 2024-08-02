@@ -5,10 +5,13 @@ export class UpdateBook {
   title: string;
   authorName: string;
   price: string;
-  copies: number;
-  topic: string;
-  subject: string;
+  no_of_copies: number;
+  edition: string;
+  publisher: string;
   language: string;
+  genre: string;
+  binding: string;
+  isbn_no: string;
   @IsEnum(BookStock)
   stock: BookStock;
 }
