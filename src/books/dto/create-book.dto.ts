@@ -11,13 +11,22 @@ export class CreateBookDto {
   price: string;
 
   @IsNotEmpty()
-  copies: number;
+  no_of_copies: number;
 
   @IsNotEmpty()
-  topic: string;
+  isbn_no: string;
 
   @IsNotEmpty()
-  subject: string;
+  publisher: string;
+
+  @IsNotEmpty()
+  genre: string;
+
+  @IsNotEmpty()
+  edition: string;
+
+  @IsNotEmpty()
+  binding: string;
 
   @IsNotEmpty()
   language: string;

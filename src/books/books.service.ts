@@ -54,27 +54,31 @@ export class BooksService {
 
   async updateBook(id: string, updateBook: UpdateBook): Promise<Book> {
     const {
+      isbn_no,
       title,
+      genre,
       authorName,
-      copies,
-      language,
       price,
+      no_of_copies,
       stock,
-      subject,
-      topic,
+      edition,
+      language,
+      publisher,
     } = updateBook;
     const book = await this.getBookById(id);
     if (!book) {
       throw new NotFoundException(`Book with id "${id}" is not found`);
     } else {
       book.stock = stock;
+      book.isbn_no = isbn_no;
       book.title = title;
       book.authorName = authorName;
-      book.copies = copies;
+      book.no_of_copies = no_of_copies;
       book.language = language;
       book.price = price;
-      book.subject = subject;
-      book.topic = topic;
+      book.publisher = publisher;
+      book.edition = edition;
+      book.genre = genre;
       this.bookRepository.save(book);
       return book;
     }
