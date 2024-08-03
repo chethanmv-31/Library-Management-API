@@ -18,7 +18,7 @@ export class AuthorService {
 
     if (!found) {
       throw new NotFoundException(
-        `Author is not available with this id '${id}'`,
+        `Author is not found with this id '${id}'`,
       );
     }
     return found;

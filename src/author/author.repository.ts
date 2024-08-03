@@ -23,15 +23,8 @@ export class AuthorRepository extends Repository<Author> {
   async createAuthor(createAuthorDto: CreateAuthorDto): Promise<Author> {
     const { author_Name } = createAuthorDto;
     const author = this.create({ author_Name });
-    try {
-      await this.save(author);
-    } catch (error) {
-      if (error.code == '23505') {
-        throw new ConflictException('Author name already exists');
-      } else {
-        throw new InternalServerErrorException();
-      }
-    }
+    await this.save(author);
+
     return author;
   }
 }

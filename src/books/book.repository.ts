@@ -1,40 +1,44 @@
 import { CreateAuthorDto } from 'src/author/dto/create-author.dto';
 import { Injectable, Logger } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { Book } from './book.entity';
+import { Book } from './entities/book.entity';
 import { CreateBookDto } from './dto/create-book.dto';
 import { BookStock } from './books.model';
 import { AuthorRepository } from 'src/author/author.repository';
+import { BindingRepository } from 'src/binding/binding.repository';
+import { CreateBindingDto } from 'src/binding/dto/create-binding.dto';
+import { AuthorService } from 'src/author/author.service';
+import { BindingService } from 'src/binding/binding.service';
 
 @Injectable()
 export class BooksRepository extends Repository<Book> {
   constructor(
     private dataSource: DataSource,
-    private authorRepository: AuthorRepository,
+    private authorService: AuthorService,
+    private bindingService: BindingService,
   ) {
     super(Book, dataSource.createEntityManager());
   }
 
   private logger = new Logger('Book Repository');
 
-  async createBook(
-    createBookDto: CreateBookDto,
-    createAuthorDto: CreateAuthorDto,
-  ): Promise<Book> {
-    const { author_Name } = createAuthorDto;
-    const authors = this.authorRepository.create({ author_Name });
-    await this.authorRepository.save(authors);
+  async createBook(createBookDto: CreateBookDto): Promise<Book> {
     const {
       isbn_no,
       title,
       genre,
       price,
+      binding_id,
+      author_id,
       no_of_copies,
       edition,
       language,
       publisher,
-      binding,
     } = createBookDto;
+
+    const author = await this.authorService.getAuthorById(author_id);
+    const binding = await this.bindingService.getBindingById(binding_id);
+
     const book = this.create({
       isbn_no,
       title,
@@ -43,11 +47,11 @@ export class BooksRepository extends Repository<Book> {
       no_of_copies,
       edition,
       language,
-      binding,
       publisher,
       stock: BookStock.IN_STOCK,
     });
-    book.author = authors;
+    book.author = author;
+    book.binding = binding;
     await this.save(book);
     return book;
   }

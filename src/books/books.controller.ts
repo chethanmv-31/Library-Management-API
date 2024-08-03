@@ -10,11 +10,12 @@ import {
 } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
-import { Book } from './book.entity';
+import { Book } from './entities/book.entity';
 import { BookStock } from './books.model';
 import { UpdateBookSStock } from './dto/update-book-stock.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { CreateAuthorDto } from 'src/author/dto/create-author.dto';
+import { CreateBindingDto } from 'src/binding/dto/create-binding.dto';
 
 @Controller('books')
 export class BooksController {
@@ -32,12 +33,8 @@ export class BooksController {
   }
 
   @Post()
-  createBook(
-    @Body() createBookDto: CreateBookDto,
-    @Body() createAuthorDto: CreateAuthorDto,
-  ): Promise<Book> {
-    this.logger.verbose(`Book is created `);
-    return this.booksService.createBook(createBookDto, createAuthorDto);
+  createBook(@Body() createBookDto: CreateBookDto): Promise<Book> {
+    return this.booksService.createBook(createBookDto);
   }
 
   @Delete('/:id')

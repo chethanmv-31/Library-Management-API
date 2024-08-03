@@ -3,10 +3,11 @@ import { BooksModule } from './books/books.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { User } from './auth/user.entity';
-import { Book } from './books/book.entity';
+import { User } from './auth/entities/user.entity';
+import { Book } from './books/entities/book.entity';
 import { ConfigValidationSchema } from './schema-validation';
 import { AuthorModule } from './author/author.module';
+import { BindingModule } from './binding/binding.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AuthorModule } from './author/author.module';
     BooksModule,
     AuthModule,
     AuthorModule,
+    BindingModule,
   ],
 })
 export class AppModule {}
