@@ -17,14 +17,13 @@ export class CreateBookDto {
   publisher: string;
 
   @IsNotEmpty()
-  genre: string;
-
-  @IsNotEmpty()
   edition: string;
 
   author_id: number;
 
   binding_id: number;
+
+  category_id: number;
 
   @IsNotEmpty()
   language: string;

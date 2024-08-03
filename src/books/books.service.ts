@@ -26,7 +26,7 @@ export class BooksService {
       where: {
         id: id,
       },
-      relations: ['author'],
+      relations: ['author', 'binding', 'category'],
     });
 
     if (!found)
@@ -100,7 +100,6 @@ export class BooksService {
       book.price = price;
       book.publisher = publisher;
       book.edition = edition;
-      book.genre = genre;
 
       this.bookRepository.save(book);
       return book;

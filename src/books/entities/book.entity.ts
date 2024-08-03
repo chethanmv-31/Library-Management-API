@@ -4,6 +4,7 @@ import { User } from 'src/auth/entities/user.entity';
 import { Exclude } from 'class-transformer';
 import { Author } from 'src/author/entities/author.entity';
 import { Binding } from 'src/binding/entities/binding.entity';
+import { Category } from 'src/category/entities/category.entity';
 
 @Entity()
 export class Book {
@@ -15,9 +16,6 @@ export class Book {
 
   @Column()
   title: string;
-
-  @Column()
-  genre: string;
 
   @Column()
   language: string;
@@ -54,4 +52,11 @@ export class Book {
     onDelete: 'SET NULL',
   })
   binding: Binding;
+
+  @ManyToOne((_type) => Category, (category) => category.books, {
+    eager: false,
+    cascade: true,
+    onDelete: 'SET NULL',
+  })
+  category: Category;
 }

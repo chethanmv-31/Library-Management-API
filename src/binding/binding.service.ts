@@ -30,8 +30,11 @@ export class BindingService {
     const result = await this.bindingRepository.delete({
       id,
     });
+    if (result.affected === 0) {
+      throw new NotFoundException(`Binding not found with this id "${id}"`);
+    }
 
-    return '';
+    return 'Delete success';
   }
 
   async updateBindingById(

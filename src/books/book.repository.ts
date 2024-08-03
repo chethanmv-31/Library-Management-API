@@ -9,6 +9,7 @@ import { BindingRepository } from 'src/binding/binding.repository';
 import { CreateBindingDto } from 'src/binding/dto/create-binding.dto';
 import { AuthorService } from 'src/author/author.service';
 import { BindingService } from 'src/binding/binding.service';
+import { CategoryService } from 'src/category/category.service';
 
 @Injectable()
 export class BooksRepository extends Repository<Book> {
@@ -16,6 +17,7 @@ export class BooksRepository extends Repository<Book> {
     private dataSource: DataSource,
     private authorService: AuthorService,
     private bindingService: BindingService,
+    private categoryService: CategoryService,
   ) {
     super(Book, dataSource.createEntityManager());
   }
@@ -26,7 +28,6 @@ export class BooksRepository extends Repository<Book> {
     const {
       isbn_no,
       title,
-      genre,
       price,
       binding_id,
       author_id,
@@ -34,15 +35,16 @@ export class BooksRepository extends Repository<Book> {
       edition,
       language,
       publisher,
+      category_id,
     } = createBookDto;
 
+    const category = await this.categoryService.getCategoryById(category_id);
     const author = await this.authorService.getAuthorById(author_id);
     const binding = await this.bindingService.getBindingById(binding_id);
 
     const book = this.create({
       isbn_no,
       title,
-      genre,
       price,
       no_of_copies,
       edition,
@@ -52,15 +54,16 @@ export class BooksRepository extends Repository<Book> {
     });
     book.author = author;
     book.binding = binding;
+    book.category = category;
     await this.save(book);
     return book;
   }
 
   async getBooks(): Promise<Book[]> {
-    const query = this.createQueryBuilder('book').leftJoinAndSelect(
-      'book.author',
-      'author',
-    );
+    const query = this.createQueryBuilder('book')
+      .leftJoinAndSelect('book.author', 'author')
+      .leftJoinAndSelect('book.binding', 'binding')
+      .leftJoinAndSelect('book.category', 'category');
     try {
       const books = await query.getMany();
       this.logger.verbose(`Success to get tasks`);
