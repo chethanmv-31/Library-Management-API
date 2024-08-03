@@ -10,6 +10,8 @@ import { AuthorService } from 'src/author/author.service';
 import { Binding } from 'src/binding/entities/binding.entity';
 import { BindingRepository } from 'src/binding/binding.repository';
 import { BindingService } from 'src/binding/binding.service';
+import { CategoryRepository } from 'src/category/category.repository';
+import { CategoryService } from 'src/category/category.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Book, Author, Binding])],
@@ -21,6 +23,8 @@ import { BindingService } from 'src/binding/binding.service';
     BindingService,
     AuthorService,
     BindingRepository,
+    CategoryRepository,
+    CategoryService
   ],
 })
 export class BooksModule {}

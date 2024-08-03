@@ -8,6 +8,7 @@ import { Book } from './books/entities/book.entity';
 import { ConfigValidationSchema } from './schema-validation';
 import { AuthorModule } from './author/author.module';
 import { BindingModule } from './binding/binding.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { BindingModule } from './binding/binding.module';
     AuthModule,
     AuthorModule,
     BindingModule,
+    CategoryModule,
   ],
 })
 export class AppModule {}
