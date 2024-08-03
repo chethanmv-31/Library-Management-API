@@ -4,7 +4,6 @@ export class CreateBookDto {
   @IsNotEmpty()
   title: string;
 
-
   @IsNotEmpty()
   price: string;
 
@@ -23,10 +22,10 @@ export class CreateBookDto {
   @IsNotEmpty()
   edition: string;
 
-  @IsNotEmpty()
-  binding: string;
+  author_id: number;
+
+  binding_id: number;
 
   @IsNotEmpty()
   language: string;
-
 }

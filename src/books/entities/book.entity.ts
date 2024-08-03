@@ -1,8 +1,9 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { BookStock } from './books.model';
-import { User } from 'src/auth/user.entity';
+import { BookStock } from '../books.model';
+import { User } from 'src/auth/entities/user.entity';
 import { Exclude } from 'class-transformer';
 import { Author } from 'src/author/entities/author.entity';
+import { Binding } from 'src/binding/entities/binding.entity';
 
 @Entity()
 export class Book {
@@ -28,9 +29,6 @@ export class Book {
   publisher: string;
 
   @Column()
-  binding: string;
-
-  @Column()
   price: string;
 
   @Column()
@@ -45,6 +43,15 @@ export class Book {
 
   @ManyToOne((_type) => Author, (author) => author.books, {
     eager: false,
+    cascade: true,
+    onDelete: 'SET NULL',
   })
   author: Author;
+
+  @ManyToOne((_type) => Binding, (binding) => binding.books, {
+    eager: false,
+    cascade: true,
+    onDelete: 'SET NULL',
+  })
+  binding: Binding;
 }

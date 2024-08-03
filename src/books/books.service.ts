@@ -3,18 +3,18 @@ import { AuthorRepository } from 'src/author/author.repository';
 import { CreateBookDto } from './dto/create-book.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { BooksRepository } from './book.repository';
-import { Book } from './book.entity';
+import { Book } from './entities/book.entity';
 import { BookStock } from './books.model';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { CreateAuthorDto } from 'src/author/dto/create-author.dto';
 import { Author } from 'src/author/entities/author.entity';
+import { CreateBindingDto } from 'src/binding/dto/create-binding.dto';
 
 @Injectable()
 export class BooksService {
   constructor(
     private bookRepository: BooksRepository,
     private authorRepository: AuthorRepository,
-    private authorService: AuthorService,
   ) {}
 
   async getAllBooks(): Promise<Book[]> {
@@ -35,11 +35,8 @@ export class BooksService {
     return found;
   }
 
-  createBook(
-    createBookDto: CreateBookDto,
-    createAuthorDto: CreateAuthorDto,
-  ): Promise<Book> {
-    return this.bookRepository.createBook(createBookDto, createAuthorDto);
+  createBook(createBookDto: CreateBookDto): Promise<Book> {
+    return this.bookRepository.createBook(createBookDto);
   }
 
   async deleteBookById(id: string): Promise<string> {
@@ -92,8 +89,6 @@ export class BooksService {
     if (!book) {
       throw new NotFoundException(`Book with id "${id}" is not found`);
     } else {
-
-      
       author.author_Name = updateAuthorDto.author_Name;
       this.authorRepository.save(author);
 
