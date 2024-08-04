@@ -2,15 +2,23 @@ import { DataSource, Repository } from 'typeorm';
 import { Borrowers } from './entities/borrowers.entity';
 import { Injectable } from '@nestjs/common';
 import { CreateBorrowersDto } from './dto/create-borrowers.dto';
+import { BooksService } from 'src/books/books.service';
 
 @Injectable()
 export class BorrowersRepository extends Repository<Borrowers> {
-  constructor(private dataSource: DataSource) {
+  constructor(
+    private dataSource: DataSource,
+
+    private bookService: BooksService,
+  ) {
     super(Borrowers, dataSource.createEntityManager());
   }
 
   async getAllBorrowers(): Promise<Borrowers[]> {
-    const query = this.createQueryBuilder();
+    const query = this.createQueryBuilder('borrowers').leftJoinAndSelect(
+      'borrowers.book',
+      'book',
+    );
     const borrow = await query.getMany();
     return borrow;
   }
@@ -19,23 +27,23 @@ export class BorrowersRepository extends Repository<Borrowers> {
     createBorrowersDto: CreateBorrowersDto,
   ): Promise<Borrowers> {
     const {
-      // book_id,
       borrowed_From,
       borrowed_TO,
       borrower_name,
       issued_by,
       actual_Return_Date,
+      book_id,
     } = createBorrowersDto;
     const borrowers = this.create({
-      // book_id,
       borrowed_From,
       borrowed_TO,
       borrower_name,
       issued_by,
       actual_Return_Date,
     });
-    
-    
+
+    const book = await this.bookService.getBookById(book_id);
+    borrowers.book = book;
     await this.save(borrowers);
 
     return borrowers;
