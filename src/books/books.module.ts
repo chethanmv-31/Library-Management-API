@@ -12,9 +12,17 @@ import { BindingRepository } from 'src/binding/binding.repository';
 import { BindingService } from 'src/binding/binding.service';
 import { CategoryRepository } from 'src/category/category.repository';
 import { CategoryService } from 'src/category/category.service';
+// import { Borrow } from 'src/borrow/entities/borrow.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Book, Author, Binding])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Book,
+      Author,
+      Binding,
+      // Borrow
+    ]),
+  ],
   controllers: [BooksController],
   providers: [
     BooksService,
@@ -24,7 +32,7 @@ import { CategoryService } from 'src/category/category.service';
     AuthorService,
     BindingRepository,
     CategoryRepository,
-    CategoryService
+    CategoryService,
   ],
 })
 export class BooksModule {}
