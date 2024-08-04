@@ -19,8 +19,8 @@ export class AuthorRepository extends Repository<Author> {
       'author.books',
       'book',
     );
-    const books = await query.getMany();
-    return books;
+    const author = await query.getMany();
+    return author;
   }
 
   async createAuthor(createAuthorDto: CreateAuthorDto): Promise<Author> {

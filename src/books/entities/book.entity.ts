@@ -5,13 +5,14 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { BookStock } from '../books.model';
+import { BookStock } from '../dto/books.model';
 import { User } from 'src/auth/entities/user.entity';
 import { Exclude } from 'class-transformer';
 import { Author } from 'src/author/entities/author.entity';
 import { Binding } from 'src/binding/entities/binding.entity';
 import { Category } from 'src/category/entities/category.entity';
 import { Borrowers } from 'src/borrowers/entities/borrowers.entity';
+import { Shelf } from 'src/shelf/entities/shelf.entity';
 
 @Entity()
 export class Book {
@@ -69,4 +70,11 @@ export class Book {
 
   @OneToMany((_type) => Borrowers, (borrowerDetails) => borrowerDetails.book)
   borrowerDetails: Borrowers[];
+
+  @ManyToOne((_type) => Shelf, (shelf) => shelf.books, {
+    eager: false,
+    cascade: true,
+    onDelete: 'SET NULL',
+  })
+  shelf: Shelf;
 }

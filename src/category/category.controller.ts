@@ -16,7 +16,7 @@ export class CategoryController {
   constructor(private categoryService: CategoryService) {}
 
   @Post()
-  createBindings(
+  createCategory(
     @Body() createCategoryDto: CreateCategoryDto,
   ): Promise<Category> {
     return this.categoryService.createCategory(createCategoryDto);
@@ -33,7 +33,7 @@ export class CategoryController {
   }
 
   @Delete('/:id')
-  deleteBindingById(@Param('id') id: number): Promise<string> {
+  deleteCategoryById(@Param('id') id: number): Promise<string> {
     return this.categoryService.deleteCategoryById(id);
   }
 

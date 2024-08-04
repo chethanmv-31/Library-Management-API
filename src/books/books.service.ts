@@ -4,7 +4,7 @@ import { CreateBookDto } from './dto/create-book.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { BooksRepository } from './book.repository';
 import { Book } from './entities/book.entity';
-import { BookStock } from './books.model';
+import { BookStock } from './dto/books.model';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { CreateAuthorDto } from 'src/author/dto/create-author.dto';
 import { Author } from 'src/author/entities/author.entity';

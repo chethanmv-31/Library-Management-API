@@ -12,9 +12,12 @@ import { BindingRepository } from 'src/binding/binding.repository';
 import { BindingService } from 'src/binding/binding.service';
 import { CategoryRepository } from 'src/category/category.repository';
 import { CategoryService } from 'src/category/category.service';
+import { ShelfService } from 'src/shelf/shelf.service';
+import { ShelfRepository } from 'src/shelf/shelf.repository';
+import { Shelf } from 'src/shelf/entities/shelf.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Book, Author, Binding])],
+  imports: [TypeOrmModule.forFeature([Book, Author, Binding, Shelf])],
   controllers: [BooksController],
   providers: [
     BooksService,
@@ -24,8 +27,10 @@ import { CategoryService } from 'src/category/category.service';
     AuthorService,
     BindingRepository,
     CategoryRepository,
-    CategoryService
+    CategoryService,
+    ShelfService,
+    ShelfRepository,
   ],
-  exports:[BooksService]
+  exports: [BooksService],
 })
 export class BooksModule {}
