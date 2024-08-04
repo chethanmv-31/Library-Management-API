@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { BookStock } from '../books.model';
 import { User } from 'src/auth/entities/user.entity';
 import { Exclude } from 'class-transformer';
@@ -59,4 +65,7 @@ export class Book {
     onDelete: 'SET NULL',
   })
   category: Category;
+
+  // @OneToMany(() => Borrow, (borrow) => borrow.book)
+  // borrows: Borrow[];
 }

@@ -9,6 +9,10 @@ import { ConfigValidationSchema } from './schema-validation';
 import { AuthorModule } from './author/author.module';
 import { BindingModule } from './binding/binding.module';
 import { CategoryModule } from './category/category.module';
+// import { BorrowersModule } from './borrower/borrowers.module';
+// import { BorrowModule } from './borrow/borrow.module';
+import { BorrowersModule } from './borrowers/borrowers.module';
+import { BorrowModule } from './borrow/borrow.module';
 
 @Module({
   imports: [
@@ -37,6 +41,10 @@ import { CategoryModule } from './category/category.module';
     AuthorModule,
     BindingModule,
     CategoryModule,
+    BorrowersModule,
+    BorrowModule,
+    // BorrowersModule,
+    // BorrowModule,
   ],
 })
 export class AppModule {}

@@ -32,7 +32,10 @@ export class CategoryRepository extends Repository<Category> {
   }
 
   async getAllCategory(): Promise<Category[]> {
-    const query = this.createQueryBuilder();
+    const query = this.createQueryBuilder('category').leftJoinAndSelect(
+      'category.books',
+      'book',
+    );
     const categories = query.getMany();
     return categories;
   }

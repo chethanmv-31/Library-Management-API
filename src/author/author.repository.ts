@@ -15,7 +15,10 @@ export class AuthorRepository extends Repository<Author> {
   }
 
   async getAllAuthors(): Promise<Author[]> {
-    const query = this.createQueryBuilder();
+    const query = this.createQueryBuilder('author').leftJoinAndSelect(
+      'author.books',
+      'book',
+    );
     const books = await query.getMany();
     return books;
   }

@@ -22,8 +22,11 @@ export class BindingRepository extends Repository<Binding> {
   }
 
   async getAllBindings(): Promise<Binding[]> {
-    const query = await this.createQueryBuilder();
-    const bindings = query.getMany();
+    const query = this.createQueryBuilder('binding').leftJoinAndSelect(
+      'binding.books',
+      'book',
+    );
+    const bindings = await query.getMany();
     return bindings;
   }
 }
