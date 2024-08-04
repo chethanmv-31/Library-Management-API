@@ -24,6 +24,8 @@ export class CreateBookDto {
   binding_id: number;
 
   category_id: number;
+  
+  shelf_id: number;
 
   @IsNotEmpty()
   language: string;

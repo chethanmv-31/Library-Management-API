@@ -3,13 +3,14 @@ import { Injectable, Logger } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Book } from './entities/book.entity';
 import { CreateBookDto } from './dto/create-book.dto';
-import { BookStock } from './books.model';
+import { BookStock } from './dto/books.model';
 import { AuthorRepository } from 'src/author/author.repository';
 import { BindingRepository } from 'src/binding/binding.repository';
 import { CreateBindingDto } from 'src/binding/dto/create-binding.dto';
 import { AuthorService } from 'src/author/author.service';
 import { BindingService } from 'src/binding/binding.service';
 import { CategoryService } from 'src/category/category.service';
+import { ShelfService } from 'src/shelf/shelf.service';
 
 @Injectable()
 export class BooksRepository extends Repository<Book> {
@@ -18,6 +19,7 @@ export class BooksRepository extends Repository<Book> {
     private authorService: AuthorService,
     private bindingService: BindingService,
     private categoryService: CategoryService,
+    private shelfService: ShelfService,
   ) {
     super(Book, dataSource.createEntityManager());
   }
@@ -34,6 +36,7 @@ export class BooksRepository extends Repository<Book> {
       no_of_copies,
       edition,
       language,
+      shelf_id,
       publisher,
       category_id,
     } = createBookDto;
@@ -41,6 +44,7 @@ export class BooksRepository extends Repository<Book> {
     const category = await this.categoryService.getCategoryById(category_id);
     const author = await this.authorService.getAuthorById(author_id);
     const binding = await this.bindingService.getBindingById(binding_id);
+    const shelf = await this.shelfService.getShelfById(shelf_id);
 
     const book = this.create({
       isbn_no,
@@ -55,6 +59,7 @@ export class BooksRepository extends Repository<Book> {
     book.author = author;
     book.binding = binding;
     book.category = category;
+    book.shelf = shelf;
     await this.save(book);
     return book;
   }
