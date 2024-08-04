@@ -9,5 +9,6 @@ import { Borrowers } from './entities/borrowers.entity';
   providers: [BorrowersService, BorrowersRepository],
   controllers: [BorrowersController],
   imports: [TypeOrmModule.forFeature([Borrowers])],
+  exports: [BorrowersService], // Make sure this line exists
 })
 export class BorrowersModule {}

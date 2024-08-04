@@ -19,7 +19,6 @@ export class BorrowersRepository extends Repository<Borrowers> {
     createBorrowersDto: CreateBorrowersDto,
   ): Promise<Borrowers> {
     const {
-      // book_id,
       borrowed_From,
       borrowed_TO,
       borrower_name,
@@ -27,7 +26,6 @@ export class BorrowersRepository extends Repository<Borrowers> {
       actual_Return_Date,
     } = createBorrowersDto;
     const borrowers = this.create({
-      // book_id,
       borrowed_From,
       borrowed_TO,
       borrower_name,

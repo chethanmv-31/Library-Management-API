@@ -16,4 +16,7 @@ export class CreateBorrowersDto {
   @IsNotEmpty()
   issued_by: number;
 
+  @IsNotEmpty()
+  book_id: string;
+
 }

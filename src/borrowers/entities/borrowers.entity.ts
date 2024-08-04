@@ -1,5 +1,6 @@
 import { Book } from 'src/books/entities/book.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Borrow } from 'src/borrow/entities/borrow.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Borrowers {
@@ -21,9 +22,7 @@ export class Borrowers {
   @Column()
   issued_by: number;
 
-  // @Column()
-  // book_id: string;
-
-  // @OneToMany(() => Borrow, (borrow) => borrow.borrower)
-  // borrows: Borrow[];
+  
+  @OneToMany(() => Borrow, (borrow) => borrow.borrower)
+  borrows: Borrow[];
 }

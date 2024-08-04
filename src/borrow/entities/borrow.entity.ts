@@ -1,6 +1,7 @@
 import { Book } from 'src/books/entities/book.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { BorrowStatus } from '../dto/borrow.model';
+import { Borrowers } from 'src/borrowers/entities/borrowers.entity';
 
 @Entity()
 export class Borrow {
@@ -16,9 +17,9 @@ export class Borrow {
   @Column()
   status: BorrowStatus;
 
-  // @ManyToOne(() => Book, (book) => book.borrows)
-  // book: Book;
+  @ManyToOne(() => Book, (book) => book.borrows)
+  book: Book;
 
-  // @ManyToOne(() => Borrowers, (borrower) => borrower.borrows)
-  // borrower: Borrowers;
+  @ManyToOne(() => Borrowers, (borrower) => borrower.borrows)
+  borrower: Borrowers;
 }
