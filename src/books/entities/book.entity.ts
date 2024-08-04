@@ -11,7 +11,7 @@ import { Exclude } from 'class-transformer';
 import { Author } from 'src/author/entities/author.entity';
 import { Binding } from 'src/binding/entities/binding.entity';
 import { Category } from 'src/category/entities/category.entity';
-import { Borrow } from 'src/borrow/entities/borrow.entity';
+import { Borrowers } from 'src/borrowers/entities/borrowers.entity';
 
 @Entity()
 export class Book {
@@ -67,6 +67,6 @@ export class Book {
   })
   category: Category;
 
-  @OneToMany(() => Borrow, (borrow) => borrow.book)
-  borrows: Borrow[];
+  @OneToMany((_type) => Borrowers, (borrowerDetails) => borrowerDetails.book)
+  borrowerDetails: Borrowers[];
 }
