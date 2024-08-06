@@ -11,6 +11,7 @@ import { CategoryModule } from './category/category.module';
 
 import { BorrowersModule } from './borrowers/borrowers.module';
 import { ShelfModule } from './shelf/shelf.module';
+import { StaffModule } from './staff/staff.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { ShelfModule } from './shelf/shelf.module';
     CategoryModule,
     BorrowersModule,
     ShelfModule,
+    StaffModule,
     // BorrowersModule,
     // BorrowModule,
   ],
