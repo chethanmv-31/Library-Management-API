@@ -15,14 +15,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private configService: ConfigService,
   ) {
     super({
-      secretOrKey: configService.get('JWT_SECRETE_KEY'),
+      secretOrKey: configService.get('JWT_AUTH_SECRETE_KEY'),
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     });
   }
 
   async validate(payload: JwtPayload): Promise<User> {
     const { username } = payload;
-    const user = this.authRepository.findOne({ where: { username } });
+    const user = await this.authRepository.findOne({ where: { username } });
+    console.log('validating======>', username);
 
     if (!user) {
       throw new UnauthorizedException();

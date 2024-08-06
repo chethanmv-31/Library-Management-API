@@ -3,6 +3,8 @@ import { Borrowers } from './entities/borrowers.entity';
 import { Injectable } from '@nestjs/common';
 import { CreateBorrowersDto } from './dto/create-borrowers.dto';
 import { BooksService } from 'src/books/books.service';
+import { BorrowerStatus } from './dto/status.model';
+import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()
 export class BorrowersRepository extends Repository<Borrowers> {
@@ -25,12 +27,14 @@ export class BorrowersRepository extends Repository<Borrowers> {
 
   async createBorrowers(
     createBorrowersDto: CreateBorrowersDto,
+    user: User,
   ): Promise<Borrowers> {
+    console.log("called========>", createBorrowersDto);
+    
     const {
       borrowed_From,
       borrowed_TO,
       borrower_name,
-      issued_by,
       actual_Return_Date,
       book_id,
     } = createBorrowersDto;
@@ -38,9 +42,12 @@ export class BorrowersRepository extends Repository<Borrowers> {
       borrowed_From,
       borrowed_TO,
       borrower_name,
-      issued_by,
       actual_Return_Date,
+      status: BorrowerStatus.RESERVED,
+      user,
     });
+
+    console.log('borrowed_From', borrowed_From);
 
     const book = await this.bookService.getBookById(book_id);
     borrowers.book = book;

@@ -14,9 +14,7 @@ export class CreateBorrowersDto {
   actual_Return_Date: Date;
 
   @IsNotEmpty()
-  issued_by: number;
-
-  @IsNotEmpty()
   book_id: string;
+  
 
 }

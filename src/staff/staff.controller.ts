@@ -17,8 +17,8 @@ import { staffData, UpdateStaffDto } from './dto/update-staff.dto';
 export class StaffController {
   constructor(private staffService: StaffService) {}
 
-  @Post('/staffLogin')
-  signUp(
+  @Post('/loginStaff')
+  loginStaff(
     @Body() staffSignInDto: StaffSignInDto,
   ): Promise<{ accessToken: string }> {
     return this.staffService.signInStaff(staffSignInDto);

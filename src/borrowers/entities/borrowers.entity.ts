@@ -7,6 +7,9 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { BorrowerStatus } from '../dto/status.model';
+import { User } from 'src/auth/entities/user.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Borrowers {
@@ -26,9 +29,16 @@ export class Borrowers {
   actual_Return_Date: Date;
 
   @Column()
+  status: BorrowerStatus;
+
+  @Column({ nullable: true })
   issued_by: number;
 
   @ManyToOne(() => Book, (book) => book.borrowerDetails)
   @JoinColumn()
   book: Book;
+
+  @ManyToOne((_type) => User, (user) => user.borrower, { eager: false })
+  @Exclude({ toPlainOnly: true })
+  user: User;
 }
