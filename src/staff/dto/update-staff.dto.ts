@@ -17,7 +17,7 @@ export class UpdateStaffDto {
   is_admin: boolean;
 
   @IsString()
-  designation: string;
+  role: string;
 }
 
 export class staffData {
@@ -29,5 +29,5 @@ export class staffData {
 
   is_admin: boolean;
 
-  designation: string;
+  role: string;
 }

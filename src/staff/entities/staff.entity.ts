@@ -18,5 +18,5 @@ export class Staff {
   is_admin: boolean;
 
   @Column()
-  designation: string;
+  role: string;
 }

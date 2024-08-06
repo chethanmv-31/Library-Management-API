@@ -15,9 +15,13 @@ import { CategoryService } from 'src/category/category.service';
 import { ShelfService } from 'src/shelf/shelf.service';
 import { ShelfRepository } from 'src/shelf/shelf.repository';
 import { Shelf } from 'src/shelf/entities/shelf.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Book, Author, Binding, Shelf])],
+  imports: [
+    TypeOrmModule.forFeature([Book, Author, Binding, Shelf]),
+    AuthModule,
+  ],
   controllers: [BooksController],
   providers: [
     BooksService,

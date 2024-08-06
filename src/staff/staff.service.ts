@@ -69,12 +69,12 @@ console.log("staffSignInDto===========>", password, email,staff );
     email: string,
     updateStaffDto: UpdateStaffDto,
   ): Promise<Staff> {
-    const { staff_name, designation, is_admin } = updateStaffDto;
+    const { staff_name, role, is_admin } = updateStaffDto;
 
     const staff = await this.getStaffByEmail(email);
 
     staff.is_admin = is_admin;
-    staff.designation = designation;
+    staff.role = role;
     staff.staff_name = staff_name;
     this.staffRepository.save(staff);
 
