@@ -2,12 +2,12 @@ import { CreateBorrowersDto } from './dto/create-borrowers.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Borrowers } from './entities/borrowers.entity';
 import { BorrowersRepository } from './borrowers.repository';
+import { UpdateBorrowerStatus } from './dto/update-borrower-status.dto';
+import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()
 export class BorrowersService {
-  constructor(
-    private readonly borrowersRepository: BorrowersRepository,
-  ) {}
+  constructor(private readonly borrowersRepository: BorrowersRepository) {}
 
   async getAllBorrowers(): Promise<Borrowers[]> {
     return await this.borrowersRepository.getAllBorrowers();
@@ -15,11 +15,13 @@ export class BorrowersService {
 
   async createBorrowers(
     createBorrowersDto: CreateBorrowersDto,
+    user: User
   ): Promise<Borrowers> {
-    return await this.borrowersRepository.createBorrowers(createBorrowersDto);
+    console.log("createBorrowersDto===============>", createBorrowersDto);
+    
+    return await this.borrowersRepository.createBorrowers(createBorrowersDto,user);
   }
 
- 
   async getBorrowersById(id: number): Promise<Borrowers> {
     const found = await this.borrowersRepository.findOne({
       where: { id: id },
@@ -49,18 +51,23 @@ export class BorrowersService {
     createBorrowersDto: CreateBorrowersDto,
   ): Promise<Borrowers> {
     const borrowers = await this.getBorrowersById(id);
-    const {
-      actual_Return_Date,
-      borrowed_From,
-      borrowed_TO,
-      issued_by,
-      borrower_name,
-    } = createBorrowersDto;
+    const { actual_Return_Date, borrowed_From, borrowed_TO, borrower_name } =
+      createBorrowersDto;
     borrowers.borrower_name = borrower_name;
     borrowers.actual_Return_Date = actual_Return_Date;
-    borrowers.issued_by = issued_by;
     borrowers.borrowed_From = borrowed_From;
     borrowers.borrowed_TO = borrowed_TO;
+    this.borrowersRepository.save(borrowers);
+    return borrowers;
+  }
+
+  async updateBorrowerStatus(
+    id: number,
+    borrowerStatus: UpdateBorrowerStatus,
+  ): Promise<Borrowers> {
+    const borrowers = await this.getBorrowersById(id);
+    const { status } = borrowerStatus;
+    borrowers.status = status;
     this.borrowersRepository.save(borrowers);
     return borrowers;
   }

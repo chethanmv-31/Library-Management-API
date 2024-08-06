@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
@@ -16,6 +17,7 @@ import { UpdateBookSStock } from './dto/update-book-stock.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { CreateAuthorDto } from 'src/author/dto/create-author.dto';
 import { CreateBindingDto } from 'src/binding/dto/create-binding.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('books')
 export class BooksController {
@@ -32,6 +34,7 @@ export class BooksController {
     return this.booksService.getBookById(id);
   }
 
+  @UseGuards(AuthGuard())
   @Post()
   createBook(@Body() createBookDto: CreateBookDto): Promise<Book> {
     return this.booksService.createBook(createBookDto);

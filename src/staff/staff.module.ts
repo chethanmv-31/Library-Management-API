@@ -4,17 +4,16 @@ import { StaffController } from './staff.controller';
 import { StaffRepository } from './staff.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Staff } from './entities/staff.entity';
-import { JwtStrategy } from './Jwt.strategy';
+import { StaffJwtStrategy } from './staffJwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  providers: [StaffService, StaffRepository, JwtStrategy],
+  providers: [StaffService, StaffRepository, StaffJwtStrategy],
   controllers: [StaffController],
   imports: [
     ConfigModule,
-    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -27,6 +26,5 @@ import { JwtModule } from '@nestjs/jwt';
     }),
     TypeOrmModule.forFeature([Staff]),
   ],
-  exports: [JwtStrategy, PassportModule],
 })
 export class StaffModule {}

@@ -36,5 +36,5 @@ export class StaffCredentialDto {
 
   @IsNotEmpty()
   @IsString()
-  designation: string;
+  role: string;
 }

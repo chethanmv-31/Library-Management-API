@@ -17,7 +17,7 @@ import { JwtStrategy } from './Jwt.strategy';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get('JWT_SECRETE_KEY'),
+        secret: configService.get('JWT_AUTH_SECRETE_KEY'),
         signOptions: {
           expiresIn: 3600,
         },
@@ -27,6 +27,6 @@ import { JwtStrategy } from './Jwt.strategy';
   ],
   providers: [AuthService, AuthRepository, JwtStrategy],
   controllers: [AuthController],
-  exports: [JwtStrategy, PassportModule],
+  exports: [PassportModule, JwtStrategy],
 })
 export class AuthModule {}

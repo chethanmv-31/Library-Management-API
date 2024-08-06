@@ -22,7 +22,7 @@ export class StaffRepository extends Repository<Staff> {
     return staffs;
   }
   async createUser(staffCredentialDto: StaffCredentialDto): Promise<void> {
-    const { email, password, designation, is_admin, staff_name } =
+    const { email, password, role, is_admin, staff_name } =
       staffCredentialDto;
 
     const salt = await bcrypt.genSalt();
@@ -31,7 +31,7 @@ export class StaffRepository extends Repository<Staff> {
     const user = this.create({
       email,
       password: hashedPassword,
-      designation,
+      role,
       is_admin,
       staff_name,
     });

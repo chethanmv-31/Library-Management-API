@@ -24,8 +24,9 @@ export class StaffService {
   ): Promise<{ accessToken: string }> {
     const { email, password } = staffSignInDto;
     const staff = await this.staffRepository.findOne({ where: { email } });
+console.log("staffSignInDto===========>", password, email,staff );
 
-    if (staff && (await bcrypt.compare(password, staff.password))) {
+    if (staff && (await bcrypt.compare(password, staff?.password))) {
       const payload: JwtPayload = { email };
       const accessToken: string = this.jwtService.sign(payload);
       return { accessToken };
@@ -68,12 +69,12 @@ export class StaffService {
     email: string,
     updateStaffDto: UpdateStaffDto,
   ): Promise<Staff> {
-    const { staff_name, designation, is_admin } = updateStaffDto;
+    const { staff_name, role, is_admin } = updateStaffDto;
 
     const staff = await this.getStaffByEmail(email);
 
     staff.is_admin = is_admin;
-    staff.designation = designation;
+    staff.role = role;
     staff.staff_name = staff_name;
     this.staffRepository.save(staff);
 

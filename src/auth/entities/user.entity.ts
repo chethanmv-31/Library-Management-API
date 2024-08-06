@@ -1,4 +1,5 @@
 import { Book } from 'src/books/entities/book.entity';
+import { Borrowers } from 'src/borrowers/entities/borrowers.entity';
 import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
 
 @Entity()
@@ -23,4 +24,7 @@ export class User {
 
   @OneToMany((_type) => Book, (book) => book.user)
   books: Book;
+
+  @OneToMany((_type) => Borrowers, (borrower) => borrower.user, { eager: true })
+  borrower: Borrowers[];
 }

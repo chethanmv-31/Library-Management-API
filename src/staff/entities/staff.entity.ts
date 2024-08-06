@@ -11,12 +11,12 @@ export class Staff {
   @Column({ unique: true })
   email: string;
 
-  @Column({ select: false })
+  @Column()
   password: string;
 
   @Column()
   is_admin: boolean;
 
   @Column()
-  designation: string;
+  role: string;
 }
