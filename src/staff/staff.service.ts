@@ -24,7 +24,6 @@ export class StaffService {
   ): Promise<{ accessToken: string }> {
     const { email, password } = staffSignInDto;
     const staff = await this.staffRepository.findOne({ where: { email } });
-console.log("staffSignInDto===========>", password, email,staff );
 
     if (staff && (await bcrypt.compare(password, staff?.password))) {
       const payload: JwtPayload = { email };

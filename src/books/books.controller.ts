@@ -25,27 +25,31 @@ export class BooksController {
   constructor(private booksService: BooksService) {}
 
   @Get()
+  @UseGuards(AuthGuard())
   getAllBooks() {
     return this.booksService.getAllBooks();
   }
 
   @Get('/:id')
+  @UseGuards(AuthGuard())
   getBookById(@Param('id') id: string): Promise<Book> {
     return this.booksService.getBookById(id);
   }
 
-  @UseGuards(AuthGuard())
   @Post()
+  @UseGuards(AuthGuard())
   createBook(@Body() createBookDto: CreateBookDto): Promise<Book> {
     return this.booksService.createBook(createBookDto);
   }
 
   @Delete('/:id')
+  @UseGuards(AuthGuard())
   deleteBookById(@Param('id') id: string): Promise<string> {
     return this.booksService.deleteBookById(id);
   }
 
   @Patch('/:id/stock')
+  @UseGuards(AuthGuard())
   updateBookStock(
     @Param('id') id: string,
     @Body() updateBookStock: UpdateBookSStock,
@@ -55,6 +59,7 @@ export class BooksController {
   }
 
   @Patch('/:id')
+  @UseGuards(AuthGuard())
   updateBook(
     @Param('id') id: string,
     @Body() updateBookDto: UpdateBookDto,
