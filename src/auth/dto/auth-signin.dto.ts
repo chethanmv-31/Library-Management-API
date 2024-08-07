@@ -4,7 +4,9 @@ import {
   MinLength,
   MaxLength,
   Matches,
+  IsEnum,
 } from 'class-validator';
+import { Role } from '../roles.model';
 
 export class UserSignInDto {
   @IsNotEmpty()
@@ -21,4 +23,8 @@ export class UserSignInDto {
     message: 'password is too week',
   })
   password: string;
+  
+  @IsNotEmpty()
+  @IsEnum(Role)
+  role: Role;
 }

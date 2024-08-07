@@ -68,7 +68,11 @@ export class Book {
   })
   category: Category;
 
-  @OneToMany((_type) => Borrowers, (borrowerDetails) => borrowerDetails.book)
+  @OneToMany((_type) => Borrowers, (borrowerDetails) => borrowerDetails.book, {
+    eager: false,
+    cascade: true,
+    onDelete: 'SET NULL',
+  })
   borrowerDetails: Borrowers[];
 
   @ManyToOne((_type) => Shelf, (shelf) => shelf.books, {

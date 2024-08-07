@@ -1,6 +1,7 @@
 import { Book } from 'src/books/entities/book.entity';
 import { Borrowers } from 'src/borrowers/entities/borrowers.entity';
 import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
+import { Role } from '../roles.model';
 
 @Entity()
 export class User {
@@ -19,6 +20,8 @@ export class User {
   @Column()
   email: string;
 
+  @Column({ type: 'enum', enum: Role, default: Role.STUDENT })
+  role: Role;
   @Column()
   password: string;
 

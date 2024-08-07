@@ -18,6 +18,10 @@ import { UpdateBookDto } from './dto/update-book.dto';
 import { CreateAuthorDto } from 'src/author/dto/create-author.dto';
 import { CreateBindingDto } from 'src/binding/dto/create-binding.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { Role } from 'src/auth/roles.model';
+import { Roles } from 'src/auth/guards/role.decorator';
+import { RolesGuard } from 'src/auth/guards/role-auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 
 @Controller('books')
 export class BooksController {
@@ -25,31 +29,48 @@ export class BooksController {
   constructor(private booksService: BooksService) {}
 
   @Get()
-  @UseGuards(AuthGuard())
+  @Roles(Role.STUDENT)
+  @Roles(Role.ADMIN)
+  @Roles(Role.CLERK)
+  @Roles(Role.LIBRARIAN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   getAllBooks() {
     return this.booksService.getAllBooks();
   }
 
   @Get('/:id')
-  @UseGuards(AuthGuard())
+  @Roles(Role.STUDENT)
+  @Roles(Role.ADMIN)
+  @Roles(Role.CLERK)
+  @Roles(Role.LIBRARIAN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   getBookById(@Param('id') id: string): Promise<Book> {
     return this.booksService.getBookById(id);
   }
 
   @Post()
-  @UseGuards(AuthGuard())
+  @Roles(Role.ADMIN)
+  @Roles(Role.CLERK)
+  @Roles(Role.LIBRARIAN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   createBook(@Body() createBookDto: CreateBookDto): Promise<Book> {
     return this.booksService.createBook(createBookDto);
   }
 
   @Delete('/:id')
-  @UseGuards(AuthGuard())
+  @Roles(Role.ADMIN)
+  @Roles(Role.CLERK)
+  @Roles(Role.LIBRARIAN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   deleteBookById(@Param('id') id: string): Promise<string> {
     return this.booksService.deleteBookById(id);
   }
 
   @Patch('/:id/stock')
-  @UseGuards(AuthGuard())
+  @Roles(Role.ADMIN)
+  @Roles(Role.CLERK)
+  @Roles(Role.LIBRARIAN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   updateBookStock(
     @Param('id') id: string,
     @Body() updateBookStock: UpdateBookSStock,
@@ -59,7 +80,10 @@ export class BooksController {
   }
 
   @Patch('/:id')
-  @UseGuards(AuthGuard())
+  @Roles(Role.ADMIN)
+  @Roles(Role.CLERK)
+  @Roles(Role.LIBRARIAN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   updateBook(
     @Param('id') id: string,
     @Body() updateBookDto: UpdateBookDto,

@@ -3,8 +3,8 @@ import { AuthRepository } from './auth.repository';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { UserSignInDto } from './dto/auth-signin.dto';
 import * as bcrypt from 'bcrypt';
-import { JwtPayload } from './jwt-payload.interface';
 import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from './jwt/jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +22,11 @@ export class AuthService {
     const user = await this.authRepository.findOne({ where: { username } });
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      const payload: JwtPayload = { username };
+      const payload = {
+        username: user.username,
+        sub: user.id,
+        role: user.role,
+      };
       const accessToken: string = this.jwtService.sign(payload);
       return { accessToken };
     } else {
