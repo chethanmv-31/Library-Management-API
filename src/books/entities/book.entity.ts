@@ -13,6 +13,7 @@ import { Binding } from 'src/binding/entities/binding.entity';
 import { Category } from 'src/category/entities/category.entity';
 import { Borrowers } from 'src/borrowers/entities/borrowers.entity';
 import { Shelf } from 'src/shelf/entities/shelf.entity';
+import { WishList } from 'src/whishlist/entities/wishlist.entity';
 
 @Entity()
 export class Book {
@@ -81,4 +82,7 @@ export class Book {
     onDelete: 'SET NULL',
   })
   shelf: Shelf;
+
+  @OneToMany(() => WishList, (wishlist) => wishlist.book)
+  wishlists: WishList[];
 }

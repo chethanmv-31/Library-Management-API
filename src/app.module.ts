@@ -14,6 +14,7 @@ import { ShelfModule } from './shelf/shelf.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/guards/role-auth.guard';
 import { JwtAuthGuard } from './auth/jwt/jwt-auth.guard';
+import { WishlistModule } from './whishlist/wishlist.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { JwtAuthGuard } from './auth/jwt/jwt-auth.guard';
     CategoryModule,
     BorrowersModule,
     ShelfModule,
+    WishlistModule,
   ],
 })
 export class AppModule {}
