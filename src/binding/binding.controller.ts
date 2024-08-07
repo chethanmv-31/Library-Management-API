@@ -12,35 +12,45 @@ import { BindingService } from './binding.service';
 import { Binding } from './entities/binding.entity';
 import { CreateBindingDto } from './create-binding.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from 'src/auth/guards/role-auth.guard';
+import { Roles } from 'src/auth/guards/role.decorator';
+import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
+import { Role } from 'src/auth/roles.model';
 
 @Controller('binding')
 export class BindingController {
   constructor(private bindingService: BindingService) {}
   @Post()
-  @UseGuards(AuthGuard())
+  @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   createBindings(@Body() createBindingDto: CreateBindingDto): Promise<Binding> {
     return this.bindingService.createBindings(createBindingDto);
   }
-  
+
   @Get()
-  @UseGuards(AuthGuard())
+  @Roles(Role.ADMIN, Role.STUDENT, Role.CLERK, Role.LIBRARIAN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   getAllBindings(): Promise<Binding[]> {
     return this.bindingService.getAllBindings();
   }
+
   @Get('/:id')
-  @UseGuards(AuthGuard())
+  @Roles(Role.ADMIN, Role.STUDENT, Role.CLERK, Role.LIBRARIAN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   getBindingById(@Param('id') id: number): Promise<Binding> {
     return this.bindingService.getBindingById(id);
   }
-  
+
   @Delete('/:id')
-  @UseGuards(AuthGuard())
+  @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   deleteBindingById(@Param('id') id: number): Promise<string> {
     return this.bindingService.deleteBindingById(id);
   }
-  
+
   @Patch('/:id')
-  @UseGuards(AuthGuard())
+  @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   updateBindingById(
     @Param('id') id: number,
     @Body() createBindingDto: CreateBindingDto,

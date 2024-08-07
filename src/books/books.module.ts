@@ -34,7 +34,9 @@ import { AuthModule } from 'src/auth/auth.module';
     CategoryService,
     ShelfService,
     ShelfRepository,
+    
   ],
+  
   exports: [BooksService],
 })
 export class BooksModule {}

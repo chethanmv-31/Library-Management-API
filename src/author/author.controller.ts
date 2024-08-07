@@ -13,6 +13,10 @@ import { AuthorService } from './author.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { Author } from './entities/author.entity';
 import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from 'src/auth/guards/role-auth.guard';
+import { Roles } from 'src/auth/guards/role.decorator';
+import { Role } from 'src/auth/roles.model';
+import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 
 @Controller('author')
 export class AuthorController {
@@ -20,31 +24,47 @@ export class AuthorController {
   private logger = new Logger('Author Controller');
 
   @Get()
-  @UseGuards(AuthGuard())
+  @Roles(Role.ADMIN)
+  @Roles(Role.CLERK)
+  @Roles(Role.LIBRARIAN)
+  @Roles(Role.STUDENT)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   getAllAuthors(): Promise<Author[]> {
     return this.authorService.getAllAuthor();
   }
 
   @Post('/create')
-  @UseGuards(AuthGuard())
+  @Roles(Role.ADMIN)
+  @Roles(Role.CLERK)
+  @Roles(Role.LIBRARIAN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   createAuthor(@Body() createAuthorDto: CreateAuthorDto): Promise<Author> {
     return this.authorService.createAuthor(createAuthorDto);
   }
 
   @Get('/:id')
-  @UseGuards(AuthGuard())
+  @Roles(Role.ADMIN)
+  @Roles(Role.CLERK)
+  @Roles(Role.LIBRARIAN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   getAuthorById(@Param('id') id: number): Promise<Author> {
     return this.authorService.getAuthorById(id);
   }
 
   @Delete('/:id')
-  @UseGuards(AuthGuard())
+  @Roles(Role.ADMIN)
+  @Roles(Role.CLERK)
+  @Roles(Role.LIBRARIAN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   deleteAuthorById(@Param('id') id: number): Promise<string> {
     return this.authorService.deleteAuthorById(id);
   }
 
   @Patch('/:id')
-  @UseGuards(AuthGuard())
+  @Roles(Role.ADMIN)
+  @Roles(Role.CLERK)
+  @Roles(Role.LIBRARIAN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   updateAuthorById(
     @Param('id') id: number,
     @Body() updateAuthorDto: CreateAuthorDto,

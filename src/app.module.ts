@@ -11,7 +11,9 @@ import { CategoryModule } from './category/category.module';
 
 import { BorrowersModule } from './borrowers/borrowers.module';
 import { ShelfModule } from './shelf/shelf.module';
-import { StaffModule } from './staff/staff.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './auth/guards/role-auth.guard';
+import { JwtAuthGuard } from './auth/jwt/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -42,9 +44,6 @@ import { StaffModule } from './staff/staff.module';
     CategoryModule,
     BorrowersModule,
     ShelfModule,
-    StaffModule,
-    // BorrowersModule,
-    // BorrowModule,
   ],
 })
 export class AppModule {}

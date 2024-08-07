@@ -15,7 +15,7 @@ import { BorrowersService } from './borrowers.service';
 import { UpdateBorrowerStatus } from './dto/update-borrower-status.dto';
 import { User } from 'src/auth/entities/user.entity';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUser } from 'src/auth/get-user.decorator';
+import { GetUser } from 'src/auth/guards/get-user.decorator';
 
 @Controller('borrowers')
 export class BorrowersController {

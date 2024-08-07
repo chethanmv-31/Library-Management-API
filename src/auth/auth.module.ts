@@ -7,7 +7,7 @@ import { AuthRepository } from './auth.repository';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
-import { JwtStrategy } from './Jwt.strategy';
+import { JwtStrategy } from './jwt/Jwt.strategy';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { JwtStrategy } from './Jwt.strategy';
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get('JWT_AUTH_SECRETE_KEY'),
         signOptions: {
-          expiresIn: 3600,
+          expiresIn: 60,
         },
       }),
     }),
