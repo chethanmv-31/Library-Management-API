@@ -17,7 +17,7 @@ export class BorrowersService {
     createBorrowersDto: CreateBorrowersDto,
     user: User
   ): Promise<Borrowers> {
-    console.log("createBorrowersDto===============>", createBorrowersDto);
+    console.log("createBorrowersDto===============>", user);
     
     return await this.borrowersRepository.createBorrowers(createBorrowersDto,user);
   }

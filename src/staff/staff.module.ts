@@ -8,9 +8,10 @@ import { StaffJwtStrategy } from './staffJwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  providers: [StaffService, StaffRepository, StaffJwtStrategy],
+  providers: [StaffService, StaffRepository],
   controllers: [StaffController],
   imports: [
     ConfigModule,
@@ -25,6 +26,8 @@ import { JwtModule } from '@nestjs/jwt';
       }),
     }),
     TypeOrmModule.forFeature([Staff]),
+    AuthModule,
   ],
 })
 export class StaffModule {}
+

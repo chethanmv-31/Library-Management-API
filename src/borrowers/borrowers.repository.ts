@@ -29,7 +29,6 @@ export class BorrowersRepository extends Repository<Borrowers> {
     createBorrowersDto: CreateBorrowersDto,
     user: User,
   ): Promise<Borrowers> {
-    console.log("called========>", createBorrowersDto);
     
     const {
       borrowed_From,
@@ -47,7 +46,6 @@ export class BorrowersRepository extends Repository<Borrowers> {
       user,
     });
 
-    console.log('borrowed_From', borrowed_From);
 
     const book = await this.bookService.getBookById(book_id);
     borrowers.book = book;
