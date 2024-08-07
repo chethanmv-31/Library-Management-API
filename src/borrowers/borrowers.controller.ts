@@ -31,9 +31,8 @@ export class BorrowersController {
   createBorrowers(
     @Body()
     createBorrowersDto: CreateBorrowersDto,
-    @GetUser() user: User,
   ): Promise<Borrowers> {
-    return this.borrowersService.createBorrowers(createBorrowersDto, user);
+    return this.borrowersService.createBorrowers(createBorrowersDto);
   }
 
   @Get()
@@ -73,7 +72,12 @@ export class BorrowersController {
   updateBorrowersStatus(
     @Param('id') id: number,
     @Body() updateBorrowersStock: UpdateBorrowerStatus,
+    @GetUser() user: User,
   ): Promise<Borrowers> {
-    return this.borrowersService.updateBorrowerStatus(id, updateBorrowersStock);
+    return this.borrowersService.updateBorrowerStatus(
+      id,
+      updateBorrowersStock,
+      user,
+    );
   }
 }
