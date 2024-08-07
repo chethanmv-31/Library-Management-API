@@ -24,46 +24,35 @@ export class AuthorController {
   private logger = new Logger('Author Controller');
 
   @Get()
-  @Roles(Role.ADMIN)
-  @Roles(Role.CLERK)
-  @Roles(Role.LIBRARIAN)
-  @Roles(Role.STUDENT)
+  @Roles(Role.ADMIN, Role.STUDENT, Role.CLERK, Role.LIBRARIAN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   getAllAuthors(): Promise<Author[]> {
     return this.authorService.getAllAuthor();
   }
 
   @Post('/create')
-  @Roles(Role.ADMIN)
-  @Roles(Role.CLERK)
-  @Roles(Role.LIBRARIAN)
+  @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   createAuthor(@Body() createAuthorDto: CreateAuthorDto): Promise<Author> {
     return this.authorService.createAuthor(createAuthorDto);
   }
 
   @Get('/:id')
-  @Roles(Role.ADMIN)
-  @Roles(Role.CLERK)
-  @Roles(Role.LIBRARIAN)
+  @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   getAuthorById(@Param('id') id: number): Promise<Author> {
     return this.authorService.getAuthorById(id);
   }
 
   @Delete('/:id')
-  @Roles(Role.ADMIN)
-  @Roles(Role.CLERK)
-  @Roles(Role.LIBRARIAN)
+  @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   deleteAuthorById(@Param('id') id: number): Promise<string> {
     return this.authorService.deleteAuthorById(id);
   }
 
   @Patch('/:id')
-  @Roles(Role.ADMIN)
-  @Roles(Role.CLERK)
-  @Roles(Role.LIBRARIAN)
+  @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   updateAuthorById(
     @Param('id') id: number,

@@ -39,37 +39,28 @@ export class BooksController {
   }
 
   @Get('/:id')
-  @Roles(Role.STUDENT)
-  @Roles(Role.ADMIN)
-  @Roles(Role.CLERK)
-  @Roles(Role.LIBRARIAN)
+  @Roles(Role.ADMIN, Role.STUDENT, Role.CLERK, Role.LIBRARIAN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   getBookById(@Param('id') id: string): Promise<Book> {
     return this.booksService.getBookById(id);
   }
 
   @Post()
-  @Roles(Role.ADMIN)
-  @Roles(Role.CLERK)
-  @Roles(Role.LIBRARIAN)
+  @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   createBook(@Body() createBookDto: CreateBookDto): Promise<Book> {
     return this.booksService.createBook(createBookDto);
   }
 
   @Delete('/:id')
-  @Roles(Role.ADMIN)
-  @Roles(Role.CLERK)
-  @Roles(Role.LIBRARIAN)
+  @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   deleteBookById(@Param('id') id: string): Promise<string> {
     return this.booksService.deleteBookById(id);
   }
 
   @Patch('/:id/stock')
-  @Roles(Role.ADMIN)
-  @Roles(Role.CLERK)
-  @Roles(Role.LIBRARIAN)
+  @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   updateBookStock(
     @Param('id') id: string,
@@ -80,9 +71,7 @@ export class BooksController {
   }
 
   @Patch('/:id')
-  @Roles(Role.ADMIN)
-  @Roles(Role.CLERK)
-  @Roles(Role.LIBRARIAN)
+  @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   updateBook(
     @Param('id') id: string,
