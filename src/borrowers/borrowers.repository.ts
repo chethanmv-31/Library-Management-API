@@ -27,7 +27,6 @@ export class BorrowersRepository extends Repository<Borrowers> {
 
   async createBorrowers(
     createBorrowersDto: CreateBorrowersDto,
-    user: User,
   ): Promise<Borrowers> {
     
     const {
@@ -43,7 +42,6 @@ export class BorrowersRepository extends Repository<Borrowers> {
       borrower_name,
       actual_Return_Date,
       status: BorrowerStatus.RESERVED,
-      user,
     });
 
 

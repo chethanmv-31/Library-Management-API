@@ -31,12 +31,14 @@ export class Borrowers {
   @Column()
   status: BorrowerStatus;
 
-  @Column({ nullable: true })
-  issued_by: number;
-
+ 
   @ManyToOne(() => Book, (book) => book.borrowerDetails)
   @JoinColumn()
   book: Book;
+  
+  @ManyToOne(() => User, (user) => user.issues)
+  @JoinColumn()
+  issued_by: User;
 
   @ManyToOne((_type) => User, (user) => user.borrower, { eager: false })
   @Exclude({ toPlainOnly: true })

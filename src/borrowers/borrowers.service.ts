@@ -15,10 +15,9 @@ export class BorrowersService {
 
   async createBorrowers(
     createBorrowersDto: CreateBorrowersDto,
-    user: User
   ): Promise<Borrowers> {
     
-    return await this.borrowersRepository.createBorrowers(createBorrowersDto,user);
+    return await this.borrowersRepository.createBorrowers(createBorrowersDto);
   }
 
   async getBorrowersById(id: number): Promise<Borrowers> {
@@ -63,10 +62,13 @@ export class BorrowersService {
   async updateBorrowerStatus(
     id: number,
     borrowerStatus: UpdateBorrowerStatus,
-  ): Promise<Borrowers> {
+    user: User,
+
+  ): Promise<Borrowers> {    
     const borrowers = await this.getBorrowersById(id);
     const { status } = borrowerStatus;
     borrowers.status = status;
+    borrowers.issued_by= user
     this.borrowersRepository.save(borrowers);
     return borrowers;
   }

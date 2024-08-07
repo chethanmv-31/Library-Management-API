@@ -30,4 +30,7 @@ export class User {
 
   @OneToMany((_type) => Borrowers, (borrower) => borrower.user, { eager: true })
   borrower: Borrowers[];
+
+  @OneToMany((_type) => Borrowers, (borrower) => borrower.user, { eager: true })
+  issues: Borrowers[];
 }
