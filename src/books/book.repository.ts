@@ -11,6 +11,7 @@ import { AuthorService } from 'src/author/author.service';
 import { BindingService } from 'src/binding/binding.service';
 import { CategoryService } from 'src/category/category.service';
 import { ShelfService } from 'src/shelf/shelf.service';
+import { PublisherService } from 'src/publisher/publisher.service';
 
 @Injectable()
 export class BooksRepository extends Repository<Book> {
@@ -20,6 +21,7 @@ export class BooksRepository extends Repository<Book> {
     private bindingService: BindingService,
     private categoryService: CategoryService,
     private shelfService: ShelfService,
+    private publisherService: PublisherService,
   ) {
     super(Book, dataSource.createEntityManager());
   }
@@ -45,6 +47,7 @@ export class BooksRepository extends Repository<Book> {
     const author = await this.authorService.getAuthorById(author_id);
     const binding = await this.bindingService.getBindingById(binding_id);
     const shelf = await this.shelfService.getShelfById(shelf_id);
+    const publishers = await this.publisherService.getPublisherById(publisher);
 
     const book = this.create({
       isbn_no,
@@ -53,13 +56,13 @@ export class BooksRepository extends Repository<Book> {
       no_of_copies,
       edition,
       language,
-      publisher,
       stock: BookStock.IN_STOCK,
     });
     book.author = author;
     book.binding = binding;
     book.category = category;
     book.shelf = shelf;
+    book.publisher = publishers;
     await this.save(book);
     return book;
   }

@@ -14,6 +14,7 @@ import { Category } from 'src/category/entities/category.entity';
 import { Borrowers } from 'src/borrowers/entities/borrowers.entity';
 import { Shelf } from 'src/shelf/entities/shelf.entity';
 import { WishList } from 'src/whishlist/entities/wishlist.entity';
+import { Publisher } from 'src/publisher/entities/publisher.entity';
 
 @Entity()
 export class Book {
@@ -33,9 +34,6 @@ export class Book {
   edition: string;
 
   @Column()
-  publisher: string;
-
-  @Column()
   price: string;
 
   @Column()
@@ -44,9 +42,9 @@ export class Book {
   @Column()
   stock: BookStock;
 
-  @ManyToOne((_type) => User, (user) => user.books, { eager: false })
-  @Exclude({ toPlainOnly: true })
-  user: User;
+  // @ManyToOne((_type) => User, (user) => user.books, { eager: false })
+  // @Exclude({ toPlainOnly: true })
+  // user: User;
 
   @ManyToOne((_type) => Author, (author) => author.books, {
     eager: false,
@@ -61,6 +59,12 @@ export class Book {
     onDelete: 'SET NULL',
   })
   binding: Binding;
+  @ManyToOne((_type) => Publisher, (publisher) => publisher.books, {
+    eager: false,
+    cascade: true,
+    onDelete: 'SET NULL',
+  })
+  publisher: Publisher;
 
   @ManyToOne((_type) => Category, (category) => category.books, {
     eager: false,
