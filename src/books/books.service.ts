@@ -98,7 +98,6 @@ export class BooksService {
       book.no_of_copies = no_of_copies;
       book.language = language;
       book.price = price;
-      book.publisher = publisher;
       book.edition = edition;
 
       this.bookRepository.save(book);

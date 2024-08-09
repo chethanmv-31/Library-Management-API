@@ -16,6 +16,8 @@ import { ShelfService } from 'src/shelf/shelf.service';
 import { ShelfRepository } from 'src/shelf/shelf.repository';
 import { Shelf } from 'src/shelf/entities/shelf.entity';
 import { AuthModule } from 'src/auth/auth.module';
+import { PublisherService } from 'src/publisher/publisher.service';
+import { PublisherRepository } from 'src/publisher/publisher.repository';
 
 @Module({
   imports: [
@@ -34,7 +36,8 @@ import { AuthModule } from 'src/auth/auth.module';
     CategoryService,
     ShelfService,
     ShelfRepository,
-    
+    PublisherService,
+    PublisherRepository
   ],
   
   exports: [BooksService],

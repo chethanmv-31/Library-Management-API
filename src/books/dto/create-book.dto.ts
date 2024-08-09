@@ -13,18 +13,18 @@ export class CreateBookDto {
   @IsNotEmpty()
   isbn_no: string;
 
-  @IsNotEmpty()
-  publisher: string;
-
+  
   @IsNotEmpty()
   edition: string;
-
+  
+  publisher: number;
+  
   author_id: number;
 
   binding_id: number;
 
   category_id: number;
-  
+
   shelf_id: number;
 
   @IsNotEmpty()

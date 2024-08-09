@@ -15,6 +15,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/guards/role-auth.guard';
 import { JwtAuthGuard } from './auth/jwt/jwt-auth.guard';
 import { WishlistModule } from './whishlist/wishlist.module';
+import { PublisherModule } from './publisher/publisher.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { WishlistModule } from './whishlist/wishlist.module';
     BorrowersModule,
     ShelfModule,
     WishlistModule,
+    PublisherModule,
   ],
 })
 export class AppModule {}
