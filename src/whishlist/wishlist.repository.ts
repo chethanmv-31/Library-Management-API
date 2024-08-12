@@ -15,7 +15,7 @@ export class WishlistRepository extends Repository<WishList> {
 
     const wishlist = this.create({
       user,
-      book: { id: bookId } as any,
+      book: { id: bookId },
     });
 
     await this.save(wishlist);
