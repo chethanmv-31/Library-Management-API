@@ -3,6 +3,7 @@ import { Borrowers } from 'src/borrowers/entities/borrowers.entity';
 import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
 import { Role } from '../roles.model';
 import { WishList } from 'src/whishlist/entities/wishlist.entity';
+import { Rating } from 'src/ratings/entities/rating.entities';
 
 @Entity()
 export class User {
@@ -34,4 +35,7 @@ export class User {
 
   @OneToMany(() => WishList, (wishlist) => wishlist.user)
   wishlists: WishList[];
+
+  @OneToMany(() => Rating, (rating) => rating.user)
+  ratings: Rating[];
 }

@@ -18,6 +18,8 @@ import { Shelf } from 'src/shelf/entities/shelf.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { PublisherService } from 'src/publisher/publisher.service';
 import { PublisherRepository } from 'src/publisher/publisher.repository';
+import { RatingsService } from 'src/ratings/ratings.service';
+import { RatingRepository } from 'src/ratings/rating.repository';
 
 @Module({
   imports: [
@@ -37,9 +39,11 @@ import { PublisherRepository } from 'src/publisher/publisher.repository';
     ShelfService,
     ShelfRepository,
     PublisherService,
-    PublisherRepository
+    PublisherRepository,
+    RatingRepository,
+    RatingsService
   ],
   
-  exports: [BooksService],
+  exports: [BooksService,BooksRepository],
 })
 export class BooksModule {}

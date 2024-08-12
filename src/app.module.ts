@@ -16,6 +16,7 @@ import { RolesGuard } from './auth/guards/role-auth.guard';
 import { JwtAuthGuard } from './auth/jwt/jwt-auth.guard';
 import { WishlistModule } from './whishlist/wishlist.module';
 import { PublisherModule } from './publisher/publisher.module';
+import { RatingsModule } from './ratings/ratings.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { PublisherModule } from './publisher/publisher.module';
     ShelfModule,
     WishlistModule,
     PublisherModule,
+    RatingsModule,
   ],
 })
 export class AppModule {}
