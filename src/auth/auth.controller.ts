@@ -16,6 +16,8 @@ import { Role } from './roles.model';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { S3Service } from 'src/s3Service';
 import { JwtAuthGuard } from './jwt/jwt-auth.guard';
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('Auth')
 
 @Controller('auth')
 export class AuthController {

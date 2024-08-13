@@ -17,7 +17,8 @@ import { RolesGuard } from 'src/auth/guards/role-auth.guard';
 import { Roles } from 'src/auth/guards/role.decorator';
 import { Role } from 'src/auth/roles.model';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('Author')
 @Controller('author')
 export class AuthorController {
   constructor(private authorService: AuthorService) {}
