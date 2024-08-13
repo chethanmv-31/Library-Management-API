@@ -31,10 +31,10 @@ export class User {
   profile_pic: string;
 
   @Column()
-  createdAt: Date;
+  created_at: Date;
 
-  @Column()
-  updatedAt: Date;
+ @Column({nullable:true})
+  updated_at: Date;
 
   @OneToMany((_type) => Borrowers, (borrower) => borrower.user, { eager: true })
   borrower: Borrowers[];

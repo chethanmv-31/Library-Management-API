@@ -17,6 +17,8 @@ import { Roles } from 'src/auth/guards/role.decorator';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 import { Role } from 'src/auth/roles.model';
 import { ApiTags } from '@nestjs/swagger';
+import { GetUser } from 'src/auth/guards/get-user.decorator';
+import { User } from 'src/auth/entities/user.entity';
 
 @ApiTags('Bindings')
 @Controller('binding')
@@ -25,8 +27,11 @@ export class BindingController {
   @Post()
   @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  createBindings(@Body() createBindingDto: CreateBindingDto): Promise<Binding> {
-    return this.bindingService.createBindings(createBindingDto);
+  createBindings(
+    @Body() createBindingDto: CreateBindingDto,
+    @GetUser() user: User,
+  ): Promise<Binding> {
+    return this.bindingService.createBindings(createBindingDto, user);
   }
 
   @Get()
@@ -56,7 +61,8 @@ export class BindingController {
   updateBindingById(
     @Param('id') id: number,
     @Body() createBindingDto: CreateBindingDto,
+    @GetUser() user: User,
   ): Promise<Binding> {
-    return this.bindingService.updateBindingById(id, createBindingDto);
+    return this.bindingService.updateBindingById(id, createBindingDto, user);
   }
 }

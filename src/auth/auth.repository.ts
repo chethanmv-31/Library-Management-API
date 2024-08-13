@@ -28,7 +28,7 @@ export class AuthRepository extends Repository<User> {
     });
 
     const date = new Date();
-    user.createdAt = date;
+    user.created_at = date;
 
     try {
       await this.save(user);

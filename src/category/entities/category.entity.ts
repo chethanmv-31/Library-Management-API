@@ -10,10 +10,16 @@ export class Category {
   category_name: string;
 
   @Column()
-  createdAt: Date;
+  created_at: Date;
+
+ @Column({nullable:true})
+  updated_at: Date;
 
   @Column()
-  updatedAt: Date;
+  created_by: string;
+
+ @Column({nullable:true})
+  updated_by: string;
 
   @OneToMany((_type) => Book, (book) => book.category)
   books: Book[];

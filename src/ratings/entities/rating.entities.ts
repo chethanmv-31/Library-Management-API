@@ -11,7 +11,7 @@ export class Rating {
   rating: number;
 
   @Column()
-  createdAt: Date;
+  created_at: Date;
 
   @ManyToOne(() => User, (user) => user.ratings)
   user: User;

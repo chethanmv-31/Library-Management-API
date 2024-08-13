@@ -2,6 +2,7 @@ import { CategoryRepository } from './category.repository';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Category } from './entities/category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()
 export class CategoryService {
@@ -9,8 +10,12 @@ export class CategoryService {
 
   async createCategory(
     createCategoryDto: CreateCategoryDto,
+    user: User,
   ): Promise<Category> {
-    return await this.categoryRepository.createCategory(createCategoryDto);
+    return await this.categoryRepository.createCategory(
+      createCategoryDto,
+      user,
+    );
   }
 
   async getCategory(): Promise<Category[]> {
@@ -42,11 +47,13 @@ export class CategoryService {
   async updateCategoryById(
     id: number,
     createCategoryDto: CreateCategoryDto,
+    user: User,
   ): Promise<Category> {
     const category = await this.getCategoryById(id);
     const { category_name } = createCategoryDto;
     category.category_name = category_name;
-    category.updatedAt = new Date();
+    category.updated_at = new Date();
+    category.updated_by = user.id;
     this.categoryRepository.save(category);
     return category;
   }

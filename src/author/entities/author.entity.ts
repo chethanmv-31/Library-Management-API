@@ -16,8 +16,14 @@ export class Author {
   books: Book;
 
   @Column()
-  createdAt: Date;
+  created_at: Date;
 
-  @Column()
-  updatedAt: Date;
+  @Column({ nullable: true })
+  updated_at: Date;
+
+  @Column({ nullable: true })
+  created_by: string;
+
+  @Column({ nullable: true })
+  updated_by: string;
 }

@@ -16,10 +16,16 @@ export class Binding {
   binding_name: string;
 
   @Column()
-  createdAt: Date;
+  created_at: Date;
+
+  @Column({ nullable: true })
+  updated_at: Date;
 
   @Column()
-  updatedAt: Date;
+  created_by: string;
+
+  @Column({ nullable: true })
+  updated_by: string;
 
   @OneToMany((type) => Book, (book) => book.binding)
   books: Book[];

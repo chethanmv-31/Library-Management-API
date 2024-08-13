@@ -18,6 +18,8 @@ import { Roles } from 'src/auth/guards/role.decorator';
 import { Role } from 'src/auth/roles.model';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 import { ApiTags } from '@nestjs/swagger';
+import { User } from 'src/auth/entities/user.entity';
+import { GetUser } from 'src/auth/guards/get-user.decorator';
 @ApiTags('Author')
 @Controller('author')
 export class AuthorController {
@@ -34,8 +36,11 @@ export class AuthorController {
   @Post('/create')
   @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  createAuthor(@Body() createAuthorDto: CreateAuthorDto): Promise<Author> {
-    return this.authorService.createAuthor(createAuthorDto);
+  createAuthor(
+    @Body() createAuthorDto: CreateAuthorDto,
+    @GetUser() user: User,
+  ): Promise<Author> {
+    return this.authorService.createAuthor(createAuthorDto, user);
   }
 
   @Get('/:id')
@@ -58,7 +63,8 @@ export class AuthorController {
   updateAuthorById(
     @Param('id') id: number,
     @Body() updateAuthorDto: CreateAuthorDto,
+    @GetUser() user: User,
   ): Promise<Author> {
-    return this.authorService.updateAuthorById(id, updateAuthorDto);
+    return this.authorService.updateAuthorById(id, updateAuthorDto, user);
   }
 }
