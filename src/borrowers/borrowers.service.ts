@@ -55,6 +55,8 @@ export class BorrowersService {
     borrowers.actual_Return_Date = actual_Return_Date;
     borrowers.borrowed_From = borrowed_From;
     borrowers.borrowed_TO = borrowed_TO;
+    borrowers.updatedAt = new Date();
+
     this.borrowersRepository.save(borrowers);
     return borrowers;
   }
@@ -69,6 +71,8 @@ export class BorrowersService {
     const { status } = borrowerStatus;
     borrowers.status = status;
     borrowers.issued_by= user
+    borrowers.updatedAt = new Date();
+
     this.borrowersRepository.save(borrowers);
     return borrowers;
   }

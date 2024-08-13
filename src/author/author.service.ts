@@ -17,9 +17,7 @@ export class AuthorService {
     });
 
     if (!found) {
-      throw new NotFoundException(
-        `Author is not found with this id '${id}'`,
-      );
+      throw new NotFoundException(`Author is not found with this id '${id}'`);
     }
     return found;
   }
@@ -42,13 +40,14 @@ export class AuthorService {
     id: number,
     createAuthorDto: CreateAuthorDto,
   ): Promise<Author> {
-    const found = await this.getAuthorById(id);
-    if (!found) {
+    const author = await this.getAuthorById(id);
+    if (!author) {
       throw new NotFoundException(`Author with id "${id}" is not found!`);
     } else {
-      found.author_Name = createAuthorDto.author_Name;
-      this.authorRepository.save(found);
-      return found;
+      author.author_Name = createAuthorDto.author_Name;
+      author.updatedAt = new Date();
+      this.authorRepository.save(author);
+      return author;
     }
   }
 }

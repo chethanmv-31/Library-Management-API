@@ -14,4 +14,10 @@ export class Author {
     onDelete: 'SET NULL',
   })
   books: Book;
+
+  @Column()
+  createdAt: Date;
+
+  @Column()
+  updatedAt: Date;
 }

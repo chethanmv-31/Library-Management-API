@@ -26,6 +26,7 @@ export class AuthorRepository extends Repository<Author> {
   async createAuthor(createAuthorDto: CreateAuthorDto): Promise<Author> {
     const { author_Name } = createAuthorDto;
     const author = this.create({ author_Name });
+    author.createdAt = new Date();
     await this.save(author);
 
     return author;

@@ -12,6 +12,12 @@ export class Shelf {
   @Column()
   Shelf_No: number;
 
+  @Column()
+  createdAt: Date;
+
+  @Column()
+  updatedAt: Date;
+
   @OneToMany((_type) => Book, (book) => book.shelf)
   books: Book;
 }

@@ -10,10 +10,11 @@ export class ShelfRepository extends Repository<Shelf> {
   }
   async createShelf(CreateShelfDto: CreateShelfDto): Promise<Shelf> {
     const { Floor_No, Shelf_No } = CreateShelfDto;
-    const binding = this.create({ Floor_No, Shelf_No });
-    await this.save(binding);
+    const Shelf = this.create({ Floor_No, Shelf_No });
+    Shelf.createdAt = new Date();
+    await this.save(Shelf);
 
-    return binding;
+    return Shelf;
   }
 
   async getAllShelf(): Promise<Shelf[]> {

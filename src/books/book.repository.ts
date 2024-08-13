@@ -66,6 +66,7 @@ export class BooksRepository extends Repository<Book> {
     book.shelf = shelf;
     book.publisher = publishers;
     book.image = file;
+    book.createdAt = new Date();
     await this.save(book);
     return book;
   }

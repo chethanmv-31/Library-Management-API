@@ -27,6 +27,9 @@ export class AuthRepository extends Repository<User> {
       password: hashedPassword,
     });
 
+    const date = new Date();
+    user.createdAt = date;
+
     try {
       await this.save(user);
     } catch (error) {

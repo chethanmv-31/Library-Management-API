@@ -39,12 +39,14 @@ export class ShelfService {
 
   async updateShelfById(
     id: number,
-    updateShelfDto: UpdateShelfDto): Promise<Shelf> {
-    const category = await this.getShelfById(id);
+    updateShelfDto: UpdateShelfDto,
+  ): Promise<Shelf> {
+    const shelf = await this.getShelfById(id);
     const { Floor_No, Shelf_No } = updateShelfDto;
-    category.Floor_No = Floor_No;
-    category.Shelf_No = Shelf_No;
-    this.shelfRepository.save(category);
-    return category;
+    shelf.Floor_No = Floor_No;
+    shelf.Shelf_No = Shelf_No;
+    shelf.updatedAt = new Date();
+    this.shelfRepository.save(shelf);
+    return shelf;
   }
 }

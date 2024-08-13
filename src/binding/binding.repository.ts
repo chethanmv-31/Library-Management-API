@@ -16,6 +16,8 @@ export class BindingRepository extends Repository<Binding> {
   async createBinding(createBindingDto: CreateBindingDto): Promise<Binding> {
     const { binding_name } = createBindingDto;
     const binding = this.create({ binding_name });
+    binding.createdAt= new Date()
+    
     await this.save(binding);
 
     return binding;

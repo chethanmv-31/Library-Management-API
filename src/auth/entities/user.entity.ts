@@ -27,8 +27,14 @@ export class User {
   @Column()
   password: string;
 
-  @Column({nullable:true})
-  profile_pic:string
+  @Column({ nullable: true })
+  profile_pic: string;
+
+  @Column()
+  createdAt: Date;
+
+  @Column()
+  updatedAt: Date;
 
   @OneToMany((_type) => Borrowers, (borrower) => borrower.user, { eager: true })
   borrower: Borrowers[];

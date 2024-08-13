@@ -46,10 +46,12 @@ export class PublisherService {
     id: number,
     createPublisherDto: CreatePublisherDto,
   ): Promise<Publisher> {
-    const binding = await this.getPublisherById(id);
+    const publisher = await this.getPublisherById(id);
     const { publisher_name } = createPublisherDto;
-    binding.publisher_name = publisher_name;
-    this.publisherRepository.save(binding);
-    return binding;
+    publisher.publisher_name = publisher_name;
+    publisher.createdAt = new Date();
+
+    this.publisherRepository.save(publisher);
+    return publisher;
   }
 }
