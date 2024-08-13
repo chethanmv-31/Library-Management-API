@@ -20,6 +20,8 @@ import { PublisherService } from 'src/publisher/publisher.service';
 import { PublisherRepository } from 'src/publisher/publisher.repository';
 import { RatingsService } from 'src/ratings/ratings.service';
 import { RatingRepository } from 'src/ratings/rating.repository';
+import { S3Service } from 'src/s3Service';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -41,9 +43,11 @@ import { RatingRepository } from 'src/ratings/rating.repository';
     PublisherService,
     PublisherRepository,
     RatingRepository,
-    RatingsService
+    RatingsService,
+    S3Service,
+    ConfigService
   ],
-  
-  exports: [BooksService,BooksRepository],
+
+  exports: [BooksService, BooksRepository],
 })
 export class BooksModule {}
