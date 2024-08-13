@@ -67,7 +67,7 @@ export class BooksController {
   ): Promise<Book> {
     let imageUrl: string;
     if (image) {
-      imageUrl = await this.s3Service.uploadFile(image);
+      imageUrl = await this.s3Service.uploadFile(image, 'book-images');
     }
     return this.booksService.createBook(createBookDto, imageUrl || null);
   }
@@ -102,12 +102,13 @@ export class BooksController {
   }
 
   @Post(':id/upload')
+  @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
   @UseInterceptors(FileInterceptor('image'))
   async uploadBookImage(
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    const imageUrl = await this.s3Service.uploadFile(file);
+    const imageUrl = await this.s3Service.uploadFile(file, 'book-images');
     return this.booksService.updateBookImage(id, imageUrl);
   }
 }

@@ -27,6 +27,9 @@ export class User {
   @Column()
   password: string;
 
+  @Column({nullable:true})
+  profile_pic:string
+
   @OneToMany((_type) => Borrowers, (borrower) => borrower.user, { eager: true })
   borrower: Borrowers[];
 
