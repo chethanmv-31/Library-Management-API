@@ -28,6 +28,9 @@ export class Book {
   @Column()
   title: string;
 
+  @Column({ nullable: true })
+  image: string; // This field stores the path to the uploaded image
+
   @Column()
   language: string;
 

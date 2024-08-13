@@ -104,4 +104,13 @@ export class BooksService {
       return book;
     }
   }
+
+  async updateBookImage(id: string, imageUrl: string): Promise<Book> {
+    const book = await this.bookRepository.findOne({ where: { id } });
+    if (!book) {
+      throw new NotFoundException('Book not found');
+    }
+    book.image = imageUrl;
+    return this.bookRepository.save(book);
+  }
 }

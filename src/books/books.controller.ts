@@ -5,9 +5,12 @@ import {
   Get,
   Logger,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
@@ -22,11 +25,18 @@ import { Role } from 'src/auth/roles.model';
 import { Roles } from 'src/auth/guards/role.decorator';
 import { RolesGuard } from 'src/auth/guards/role-auth.guard';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { extname } from 'path';
+import { diskStorage } from 'multer';
+import { S3Service } from 'src/s3Service';
 
 @Controller('books')
 export class BooksController {
   private logger = new Logger('BookController');
-  constructor(private booksService: BooksService) {}
+  constructor(
+    private booksService: BooksService,
+    private readonly s3Service: S3Service,
+  ) {}
 
   @Get()
   @Roles(Role.STUDENT)
@@ -79,5 +89,15 @@ export class BooksController {
     @Body() updateAuthorDto: CreateAuthorDto,
   ): Promise<Book> {
     return this.booksService.updateBook(id, updateBookDto, updateAuthorDto);
+  }
+
+  @Post(':id/upload')
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadBookImage(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const imageUrl = await this.s3Service.uploadFile(file);
+    return this.booksService.updateBookImage(id, imageUrl);
   }
 }

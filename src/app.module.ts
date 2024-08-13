@@ -17,9 +17,15 @@ import { JwtAuthGuard } from './auth/jwt/jwt-auth.guard';
 import { WishlistModule } from './whishlist/wishlist.module';
 import { PublisherModule } from './publisher/publisher.module';
 import { RatingsModule } from './ratings/ratings.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads/',
+    }),
     ConfigModule.forRoot({
       // validationSchema: ConfigValidationSchema,
       envFilePath: [`.env.stage.${process.env.STAGE}`],
