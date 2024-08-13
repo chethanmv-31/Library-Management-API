@@ -1,10 +1,15 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthRepository } from './auth.repository';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { UserSignInDto } from './dto/auth-signin.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt/jwt-payload.interface';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -32,5 +37,14 @@ export class AuthService {
     } else {
       throw new UnauthorizedException('Please check your login credentials');
     }
+  }
+
+  async updateProfilePic(id: string, imageUrl: string): Promise<User> {
+    const user = await this.authRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException('Book not found');
+    }
+    user.profile_pic = imageUrl;
+    return this.authRepository.save(user);
   }
 }

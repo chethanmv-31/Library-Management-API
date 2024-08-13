@@ -9,16 +9,6 @@ export class S3Service {
   private s3Client: S3Client;
   private bucketName: string;
 
-  // constructor(private readonly configService: ConfigService) {
-  //   this.s3Client = new AWS.S3({
-  //     accessKeyId: configService.get('AWS_ACCESS_KEY_ID'),
-  //     secretAccessKey: configService.get('AWS_SECRET_ACCESS_KEY'),
-  //     region:
-  //   });
-  //   this.bucketName = configSconfigService.get('AWS_REGION'),
-  //   ervice.get('AWS_S3_BUCKET_NAME');
-  // }
-
   constructor(private readonly configService: ConfigService) {
     this.s3Client = new S3Client({
       region: configService.get('AWS_REGION'),
@@ -30,8 +20,8 @@ export class S3Service {
     this.bucketName = configService.get('AWS_S3_BUCKET_NAME');
   }
 
-  async uploadFile(file: Express.Multer.File): Promise<string> {
-    const key = `book-images/${uuidv4()}-${file.originalname}`;
+  async uploadFile(file: Express.Multer.File, path:string): Promise<string> {
+    const key = `${path}/${uuidv4()}-${file.originalname}`;
     const command = new PutObjectCommand({
       Bucket: this.bucketName,
       Key: key,
