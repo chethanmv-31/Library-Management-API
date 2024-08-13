@@ -16,7 +16,9 @@ import { RolesGuard } from 'src/auth/guards/role-auth.guard';
 import { Roles } from 'src/auth/guards/role.decorator';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 import { Role } from 'src/auth/roles.model';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Bindings')
 @Controller('binding')
 export class BindingController {
   constructor(private bindingService: BindingService) {}

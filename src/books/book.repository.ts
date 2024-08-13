@@ -39,15 +39,17 @@ export class BooksRepository extends Repository<Book> {
       edition,
       language,
       shelf_id,
-      publisher,
+
       category_id,
+      publisher_id,
     } = createBookDto;
 
     const category = await this.categoryService.getCategoryById(category_id);
     const author = await this.authorService.getAuthorById(author_id);
     const binding = await this.bindingService.getBindingById(binding_id);
     const shelf = await this.shelfService.getShelfById(shelf_id);
-    const publishers = await this.publisherService.getPublisherById(publisher);
+    const publishers =
+      await this.publisherService.getPublisherById(publisher_id);
 
     const book = this.create({
       isbn_no,

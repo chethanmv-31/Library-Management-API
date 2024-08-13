@@ -8,7 +8,8 @@ import { RolesGuard } from 'src/auth/guards/role-auth.guard';
 import { Roles } from 'src/auth/guards/role.decorator';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 import { Role } from 'src/auth/roles.model';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('Ratings')
 @Controller('ratings')
 export class RatingsController {
   constructor(private ratingService: RatingsService) {}

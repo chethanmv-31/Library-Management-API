@@ -5,6 +5,8 @@ import { UserSignInDto } from './dto/auth-signin.dto';
 import { RolesGuard } from './guards/role-auth.guard';
 import { Roles } from './guards/role.decorator';
 import { Role } from './roles.model';
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('Auth')
 
 @Controller('auth')
 export class AuthController {

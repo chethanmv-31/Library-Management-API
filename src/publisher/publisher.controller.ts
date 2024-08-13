@@ -8,8 +8,11 @@ import { CreateBindingDto } from 'src/binding/create-binding.dto';
 import { CreatePublisherDto } from './dto/create-publisher.dto';
 import { UpdatePublisherDto } from './dto/update-publisher.dto';
 import { Publisher } from './entities/publisher.entity';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Publisher')
 @Controller('publisher')
+
 export class PublisherController {
   constructor(private publisherService: PublisherService) {}
   @Post()

@@ -8,7 +8,7 @@
     "scripts": {
         "build": "cross-env STAGE=dev nest build",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-        "start": "nest start",
+        "start": "cross-env STAGE=dev nest start",
         "start:dev": "cross-env STAGE=dev nest start --watch",
         "start:debug": "cross-env STAGE=dev nest start --debug --watch",
         "start:prod": "cross-env STAGE=prod node dist/main",
@@ -29,6 +29,7 @@
         "@nestjs/passport": "^10.0.3",
         "@nestjs/platform-express": "^10.4.0",
         "@nestjs/serve-static": "^4.0.2",
+        "@nestjs/swagger": "^7.4.0",
         "@nestjs/typeorm": "^10.0.2",
         "@types/passport-jwt": "^4.0.1",
         "aws-sdk": "^2.1673.0",
@@ -43,6 +44,7 @@
         "pg": "^8.12.0",
         "reflect-metadata": "^0.2.0",
         "rxjs": "^7.8.1",
+        "swagger-ui-express": "^5.0.1",
         "typeorm": "^0.3.20",
         "uuid": "^10.0.0"
     },
