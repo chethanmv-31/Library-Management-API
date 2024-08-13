@@ -17,7 +17,7 @@ export class WishlistRepository extends Repository<WishList> {
       user,
       book: { id: bookId },
     });
-    wishlist.createdAt = new Date();
+    wishlist.created_at = new Date();
 
     await this.save(wishlist);
     return wishlist;

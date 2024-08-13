@@ -33,8 +33,10 @@ export class BorrowersController {
   createBorrowers(
     @Body()
     createBorrowersDto: CreateBorrowersDto,
+    @GetUser() user: User,
+
   ): Promise<Borrowers> {
-    return this.borrowersService.createBorrowers(createBorrowersDto);
+    return this.borrowersService.createBorrowers(createBorrowersDto,user);
   }
 
   @Get()
@@ -60,12 +62,13 @@ export class BorrowersController {
 
   @Patch('/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.STUDENT, Role.CLERK, Role.LIBRARIAN)
+  @Roles( Role.STUDENT)
   updateBorrowersById(
     @Param('id') id: number,
     @Body() createBorrowersDto: CreateBorrowersDto,
+    @GetUser() user: User,
   ): Promise<Borrowers> {
-    return this.borrowersService.updateBorrowersById(id, createBorrowersDto);
+    return this.borrowersService.updateBorrowersById(id, createBorrowersDto,user);
   }
 
   @Patch('/status/:id')

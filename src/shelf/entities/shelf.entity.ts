@@ -13,10 +13,16 @@ export class Shelf {
   Shelf_No: number;
 
   @Column()
-  createdAt: Date;
+  created_at: Date;
+
+  @Column({ nullable: true })
+  updated_at: Date;
 
   @Column()
-  updatedAt: Date;
+  created_by: string;
+
+  @Column({ nullable: true })
+  updated_by: string;
 
   @OneToMany((_type) => Book, (book) => book.shelf)
   books: Book;

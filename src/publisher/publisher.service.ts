@@ -1,3 +1,4 @@
+import { User } from 'src/auth/entities/user.entity';
 import { CreatePublisherDto } from './dto/create-publisher.dto';
 import { UpdatePublisherDto } from './dto/update-publisher.dto';
 import { Publisher } from './entities/publisher.entity';
@@ -27,8 +28,10 @@ export class PublisherService {
 
   async createPublisher(
     createPublisherDto: CreatePublisherDto,
+     user: User,
+
   ): Promise<Publisher> {
-    return await this.publisherRepository.createPublisher(createPublisherDto);
+    return await this.publisherRepository.createPublisher(createPublisherDto,user);
   }
 
   async deletePublisherById(id: number): Promise<string> {
@@ -45,11 +48,13 @@ export class PublisherService {
   async updatePublisherById(
     id: number,
     createPublisherDto: CreatePublisherDto,
+    user: User,
   ): Promise<Publisher> {
     const publisher = await this.getPublisherById(id);
     const { publisher_name } = createPublisherDto;
     publisher.publisher_name = publisher_name;
-    publisher.createdAt = new Date();
+    publisher.updated_at = new Date();
+    publisher.updated_by = user.id;
 
     this.publisherRepository.save(publisher);
     return publisher;

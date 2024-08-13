@@ -1,5 +1,9 @@
 import { CreateBorrowersDto } from './dto/create-borrowers.dto';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Borrowers } from './entities/borrowers.entity';
 import { BorrowersRepository } from './borrowers.repository';
 import { UpdateBorrowerStatus } from './dto/update-borrower-status.dto';
@@ -15,9 +19,12 @@ export class BorrowersService {
 
   async createBorrowers(
     createBorrowersDto: CreateBorrowersDto,
+    user: User,
   ): Promise<Borrowers> {
-    
-    return await this.borrowersRepository.createBorrowers(createBorrowersDto);
+    return await this.borrowersRepository.createBorrowers(
+      createBorrowersDto,
+      user,
+    );
   }
 
   async getBorrowersById(id: number): Promise<Borrowers> {
@@ -47,31 +54,38 @@ export class BorrowersService {
   async updateBorrowersById(
     id: number,
     createBorrowersDto: CreateBorrowersDto,
+    user: User,
   ): Promise<Borrowers> {
-    const borrowers = await this.getBorrowersById(id);
     const { actual_Return_Date, borrowed_From, borrowed_TO, borrower_name } =
       createBorrowersDto;
-    borrowers.borrower_name = borrower_name;
-    borrowers.actual_Return_Date = actual_Return_Date;
-    borrowers.borrowed_From = borrowed_From;
-    borrowers.borrowed_TO = borrowed_TO;
-    borrowers.updatedAt = new Date();
+    const borrowers = await this.getBorrowersById(id);
+    if (borrowers.status === 'RESERVED') {
+      borrowers.borrower_name = borrower_name;
+      borrowers.actual_Return_Date = actual_Return_Date;
+      borrowers.borrowed_From = borrowed_From;
+      borrowers.borrowed_TO = borrowed_TO;
+      borrowers.updated_at = new Date();
+      borrowers.updated_by = user.id;
 
-    this.borrowersRepository.save(borrowers);
-    return borrowers;
+      this.borrowersRepository.save(borrowers);
+      return borrowers;
+    } else {
+      throw new ForbiddenException(
+        'Not able to update the "ISSUED OR RETURNED" borrows',
+      );
+    }
   }
 
   async updateBorrowerStatus(
     id: number,
     borrowerStatus: UpdateBorrowerStatus,
     user: User,
-
-  ): Promise<Borrowers> {    
+  ): Promise<Borrowers> {
     const borrowers = await this.getBorrowersById(id);
     const { status } = borrowerStatus;
     borrowers.status = status;
-    borrowers.issued_by= user
-    borrowers.updatedAt = new Date();
+    borrowers.issued_by = user;
+    borrowers.updated_at = new Date();
 
     this.borrowersRepository.save(borrowers);
     return borrowers;

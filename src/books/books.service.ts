@@ -9,6 +9,7 @@ import { UpdateBookDto } from './dto/update-book.dto';
 import { CreateAuthorDto } from 'src/author/dto/create-author.dto';
 import { Author } from 'src/author/entities/author.entity';
 import { CreateBindingDto } from 'src/binding/dto/create-binding.dto';
+import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()
 export class BooksService {
@@ -38,8 +39,9 @@ export class BooksService {
   createBook(
     createBookDto: CreateBookDto,
     file: string,
+    user: User,
   ): Promise<Book> {
-    return this.bookRepository.createBook(createBookDto, file);
+    return this.bookRepository.createBook(createBookDto, file, user);
   }
 
   async deleteBookById(id: string): Promise<string> {
@@ -53,14 +55,18 @@ export class BooksService {
     }
   }
 
-  async updateBookStock(id: string, updateBookStock: BookStock): Promise<Book> {
+  async updateBookStock(
+    id: string,
+    updateBookStock: BookStock,
+    user: User,
+  ): Promise<Book> {
     const book = await this.getBookById(id);
     if (!book) {
       throw new NotFoundException(`Book with id "${id}" is not found`);
     } else {
       book.stock = updateBookStock;
-      book.updatedAt = new Date();
-
+      book.updated_at = new Date();
+      book.updated_by = user.id;
       this.bookRepository.save(book);
       return book;
     }
@@ -70,18 +76,10 @@ export class BooksService {
     id: string,
     updateBookDto: UpdateBookDto,
     updateAuthorDto: CreateAuthorDto,
+    user: User,
   ): Promise<Book> {
-    const {
-      isbn_no,
-      title,
-      genre,
-      price,
-      no_of_copies,
-      stock,
-      edition,
-      language,
-      publisher,
-    } = updateBookDto;
+    const { isbn_no, title, price, no_of_copies, stock, edition, language } =
+      updateBookDto;
 
     const book = await this.getBookById(id);
 
@@ -104,19 +102,25 @@ export class BooksService {
       book.language = language;
       book.price = price;
       book.edition = edition;
-      book.updatedAt = new Date();
+      book.updated_at = new Date();
+      book.updated_by = user.id;
 
       this.bookRepository.save(book);
       return book;
     }
   }
 
-  async updateBookImage(id: string, imageUrl: string): Promise<Book> {
+  async updateBookImage(
+    id: string,
+    imageUrl: string,
+    user: User,
+  ): Promise<Book> {
     const book = await this.bookRepository.findOne({ where: { id } });
     if (!book) {
       throw new NotFoundException('Book not found');
     }
     book.image = imageUrl;
+    book.updated_by = user.id;
     return this.bookRepository.save(book);
   }
 }

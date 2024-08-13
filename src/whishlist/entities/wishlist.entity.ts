@@ -16,7 +16,7 @@ export class WishList {
   Id: number;
 
   @Column()
-  createdAt: Date;
+  created_at: Date;
 
   @ManyToOne(() => User, (user) => user.wishlists)
   @JoinColumn({ name: 'user_id' }) // Updated column name

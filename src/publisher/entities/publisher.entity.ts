@@ -1,5 +1,11 @@
 import { Book } from 'src/books/entities/book.entity';
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Publisher {
@@ -10,10 +16,16 @@ export class Publisher {
   publisher_name: string;
 
   @Column()
-  createdAt: Date;
+  created_at: Date;
+
+  @Column({ nullable: true })
+  updated_at: Date;
 
   @Column()
-  updatedAt: Date;
+  created_by: string;
+
+  @Column({ nullable: true })
+  updated_by: string;
 
   @OneToMany((type) => Book, (book) => book.publisher)
   books: Book[];

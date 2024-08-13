@@ -89,10 +89,16 @@ export class Book {
   shelf: Shelf;
 
   @Column()
-  createdAt: Date;
+  created_at: Date;
 
-  @Column()
-  updatedAt: Date;
+ @Column({nullable:true})
+  updated_at: Date;
+
+  @Column({nullable:true})
+  created_by: string;
+
+  @Column({nullable:true})
+  updated_by: string;
 
   @OneToMany(() => WishList, (wishlist) => wishlist.book)
   wishlists: WishList[];
