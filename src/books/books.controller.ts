@@ -58,8 +58,16 @@ export class BooksController {
   @Post()
   @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  createBook(@Body() createBookDto: CreateBookDto): Promise<Book> {
-    return this.booksService.createBook(createBookDto);
+  @UseInterceptors(FileInterceptor('image'))
+  async createBook(
+    @Body() createBookDto: CreateBookDto,
+    @UploadedFile() image: Express.Multer.File,
+  ): Promise<Book> {
+    let imageUrl: string;
+    if (image) {
+      imageUrl = await this.s3Service.uploadFile(image);
+    }
+    return this.booksService.createBook(createBookDto, imageUrl || null);
   }
 
   @Delete('/:id')

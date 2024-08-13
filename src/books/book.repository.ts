@@ -28,7 +28,7 @@ export class BooksRepository extends Repository<Book> {
 
   private logger = new Logger('Book Repository');
 
-  async createBook(createBookDto: CreateBookDto): Promise<Book> {
+  async createBook(createBookDto: CreateBookDto, file: string): Promise<Book> {
     const {
       isbn_no,
       title,
@@ -63,6 +63,7 @@ export class BooksRepository extends Repository<Book> {
     book.category = category;
     book.shelf = shelf;
     book.publisher = publishers;
+    book.image = file;
     await this.save(book);
     return book;
   }
