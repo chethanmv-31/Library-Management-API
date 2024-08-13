@@ -18,6 +18,8 @@ export class PublisherRepository extends Repository<Publisher> {
   ): Promise<Publisher> {
     const { publisher_name } = createPublisherDto;
     const publisher = this.create({ publisher_name });
+    publisher.createdAt = new Date();
+
     await this.save(publisher);
 
     return publisher;

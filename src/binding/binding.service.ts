@@ -44,6 +44,8 @@ export class BindingService {
     const binding = await this.getBindingById(id);
     const { binding_name } = createBindingDto;
     binding.binding_name = binding_name;
+    binding.updatedAt = new Date();
+
     this.bindingRepository.save(binding);
     return binding;
   }

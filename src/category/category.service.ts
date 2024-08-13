@@ -46,6 +46,7 @@ export class CategoryService {
     const category = await this.getCategoryById(id);
     const { category_name } = createCategoryDto;
     category.category_name = category_name;
+    category.updatedAt = new Date();
     this.categoryRepository.save(category);
     return category;
   }

@@ -28,7 +28,6 @@ export class BorrowersRepository extends Repository<Borrowers> {
   async createBorrowers(
     createBorrowersDto: CreateBorrowersDto,
   ): Promise<Borrowers> {
-    
     const {
       borrowed_From,
       borrowed_TO,
@@ -44,9 +43,9 @@ export class BorrowersRepository extends Repository<Borrowers> {
       status: BorrowerStatus.RESERVED,
     });
 
-
     const book = await this.bookService.getBookById(book_id);
     borrowers.book = book;
+    borrowers.createdAt = new Date();
     await this.save(borrowers);
 
     return borrowers;

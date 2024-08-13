@@ -9,6 +9,12 @@ export class Publisher {
   @Column()
   publisher_name: string;
 
+  @Column()
+  createdAt: Date;
+
+  @Column()
+  updatedAt: Date;
+
   @OneToMany((type) => Book, (book) => book.publisher)
   books: Book[];
 }

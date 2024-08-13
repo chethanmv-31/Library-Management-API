@@ -28,6 +28,8 @@ export class RatingRepository extends Repository<Rating> {
     const book = await this.bookRepository.find({ where: { id: bookId } });
 
     const ratings = this.create({ rating });
+    ratings.createdAt = new Date();
+
     ratings.book = book[0];
     ratings.user = user;
     await this.save(ratings);

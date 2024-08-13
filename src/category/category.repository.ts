@@ -17,9 +17,11 @@ export class CategoryRepository extends Repository<Category> {
     createCategoryDto: CreateCategoryDto,
   ): Promise<Category> {
     const { category_name } = createCategoryDto;
-    const binding = this.create({ category_name });
+
+    const category = this.create({ category_name });
+    category.createdAt = new Date();
     try {
-      await this.save(binding);
+      await this.save(category);
     } catch (error) {
       if (error.code == '23505') {
         throw new ConflictException('Category already exists');
@@ -28,7 +30,7 @@ export class CategoryRepository extends Repository<Category> {
       }
     }
 
-    return binding;
+    return category;
   }
 
   async getAllCategory(): Promise<Category[]> {

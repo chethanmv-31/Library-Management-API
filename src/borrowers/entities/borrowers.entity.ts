@@ -31,11 +31,16 @@ export class Borrowers {
   @Column()
   status: BorrowerStatus;
 
- 
+  @Column()
+  createdAt: Date;
+
+  @Column()
+  updatedAt: Date;
+
   @ManyToOne(() => Book, (book) => book.borrowerDetails)
   @JoinColumn()
   book: Book;
-  
+
   @ManyToOne(() => User, (user) => user.issues)
   @JoinColumn()
   issued_by: User;

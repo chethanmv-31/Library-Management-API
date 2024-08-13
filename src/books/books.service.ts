@@ -59,6 +59,8 @@ export class BooksService {
       throw new NotFoundException(`Book with id "${id}" is not found`);
     } else {
       book.stock = updateBookStock;
+      book.updatedAt = new Date();
+
       this.bookRepository.save(book);
       return book;
     }
@@ -102,6 +104,7 @@ export class BooksService {
       book.language = language;
       book.price = price;
       book.edition = edition;
+      book.updatedAt = new Date();
 
       this.bookRepository.save(book);
       return book;
