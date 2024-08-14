@@ -13,6 +13,7 @@ import { BindingService } from 'src/binding/binding.service';
 import { CategoryService } from 'src/category/category.service';
 import { PublisherService } from 'src/publisher/publisher.service';
 import { ShelfService } from 'src/shelf/shelf.service';
+import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()
 export class BooksService {
@@ -58,18 +59,24 @@ export class BooksService {
     }
   }
 
-  async updateBookStock(id: string, updateBookStock: BookStock): Promise<Book> {
+  async updateBookStock(
+    id: string,
+    updateBookStock: BookStock,
+    user: User,
+  ): Promise<Book> {
     const book = await this.getBookById(id);
     if (!book) {
       throw new NotFoundException(`Book with id "${id}" is not found`);
     } else {
       book.stock = updateBookStock;
+      book.updated_at = new Date();
+      book.updated_by = user.id;
       this.bookRepository.save(book);
       return book;
     }
   }
 
-  async updateBook(id: string, updateBookDto: UpdateBookDto): Promise<Book> {
+  async updateBook(id: string, updateBookDto: UpdateBookDto, user: User,): Promise<Book> {
     const {
       isbn_no,
       title,
@@ -109,18 +116,25 @@ export class BooksService {
       book.language = language;
       book.price = price;
       book.edition = edition;
+      book.updated_at = new Date();
+      book.updated_by = user.id;
 
       this.bookRepository.save(book);
       return book;
     }
   }
 
-  async updateBookImage(id: string, imageUrl: string): Promise<Book> {
+  async updateBookImage(
+    id: string,
+    imageUrl: string,
+    user: User,
+  ): Promise<Book> {
     const book = await this.bookRepository.findOne({ where: { id } });
     if (!book) {
       throw new NotFoundException('Book not found');
     }
     book.image = imageUrl;
+    book.updated_by = user.id;
     return this.bookRepository.save(book);
   }
 }

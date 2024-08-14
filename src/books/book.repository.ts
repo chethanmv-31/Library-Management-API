@@ -12,6 +12,7 @@ import { BindingService } from 'src/binding/binding.service';
 import { CategoryService } from 'src/category/category.service';
 import { ShelfService } from 'src/shelf/shelf.service';
 import { PublisherService } from 'src/publisher/publisher.service';
+import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()
 export class BooksRepository extends Repository<Book> {
@@ -28,7 +29,11 @@ export class BooksRepository extends Repository<Book> {
 
   private logger = new Logger('Book Repository');
 
-  async createBook(createBookDto: CreateBookDto, file: string): Promise<Book> {
+  async createBook(
+    createBookDto: CreateBookDto,
+    file: string,
+    user: User,
+  ): Promise<Book> {
     const {
       isbn_no,
       title,
@@ -61,12 +66,14 @@ export class BooksRepository extends Repository<Book> {
       language,
       stock: BookStock.IN_STOCK,
     });
+    book.created_by = user.id;
     book.author = author;
     book.binding = binding;
     book.category = category;
     book.shelf = shelf;
     book.publisher = publishers;
     book.image = file;
+    book.created_at = new Date();
     await this.save(book);
     return book;
   }

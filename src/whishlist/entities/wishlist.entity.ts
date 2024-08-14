@@ -15,6 +15,9 @@ export class WishList {
   @PrimaryGeneratedColumn('rowid')
   Id: number;
 
+  @Column()
+  created_at: Date;
+
   @ManyToOne(() => User, (user) => user.wishlists)
   @JoinColumn({ name: 'user_id' }) // Updated column name
   user: User;

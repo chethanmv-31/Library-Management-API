@@ -30,6 +30,8 @@ import { extname } from 'path';
 import { diskStorage } from 'multer';
 import { S3Service } from 'src/s3Service';
 import { ApiTags } from '@nestjs/swagger';
+import { GetUser } from 'src/auth/guards/get-user.decorator';
+import { User } from 'src/auth/entities/user.entity';
 
 @ApiTags('Books')
 @Controller('books')
@@ -61,15 +63,17 @@ export class BooksController {
   @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @UseInterceptors(FileInterceptor('image'))
+  
   async createBook(
     @Body() createBookDto: CreateBookDto,
     @UploadedFile() image: Express.Multer.File,
+    @GetUser() user: User,
   ): Promise<Book> {
     let imageUrl: string;
     if (image) {
       imageUrl = await this.s3Service.uploadFile(image, 'book-images');
     }
-    return this.booksService.createBook(createBookDto, imageUrl || null);
+    return this.booksService.createBook(createBookDto, imageUrl || null, user);
   }
 
   @Delete('/:id')
@@ -85,9 +89,11 @@ export class BooksController {
   updateBookStock(
     @Param('id') id: string,
     @Body() updateBookStock: UpdateBookSStock,
+    @GetUser() user: User,
+
   ): Promise<Book> {
     const { stock } = updateBookStock;
-    return this.booksService.updateBookStock(id, stock);
+    return this.booksService.updateBookStock(id, stock,user);
   }
 
   @Patch('/:id')
@@ -96,8 +102,11 @@ export class BooksController {
   updateBook(
     @Param('id') id: string,
     @Body() updateBookDto: UpdateBookDto,
+    @Body() updateAuthorDto: CreateAuthorDto,
+    @GetUser() user: User,
+
   ): Promise<Book> {
-    return this.booksService.updateBook(id, updateBookDto);
+    return this.booksService.updateBook(id, updateBookDto,user);
   }
 
   @Post(':id/upload')
@@ -106,8 +115,10 @@ export class BooksController {
   async uploadBookImage(
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
+    @GetUser() user: User,
+
   ) {
     const imageUrl = await this.s3Service.uploadFile(file, 'book-images');
-    return this.booksService.updateBookImage(id, imageUrl);
+    return this.booksService.updateBookImage(id, imageUrl, user);
   }
 }

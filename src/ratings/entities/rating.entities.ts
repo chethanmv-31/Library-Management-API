@@ -10,9 +10,12 @@ export class Rating {
   @Column({ type: 'float' })
   rating: number;
 
-  @ManyToOne(() => User, user => user.ratings)
+  @Column()
+  created_at: Date;
+
+  @ManyToOne(() => User, (user) => user.ratings)
   user: User;
 
-  @ManyToOne(() => Book, book => book.ratings)
+  @ManyToOne(() => Book, (book) => book.ratings)
   book: Book;
 }

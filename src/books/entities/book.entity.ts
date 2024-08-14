@@ -46,7 +46,6 @@ export class Book {
   @Column()
   stock: BookStock;
 
-
   @ManyToOne((_type) => Author, (author) => author.books, {
     eager: false,
     cascade: true,
@@ -89,9 +88,21 @@ export class Book {
   })
   shelf: Shelf;
 
+  @Column()
+  created_at: Date;
+
+ @Column({nullable:true})
+  updated_at: Date;
+
+  @Column({nullable:true})
+  created_by: string;
+
+  @Column({nullable:true})
+  updated_by: string;
+
   @OneToMany(() => WishList, (wishlist) => wishlist.book)
   wishlists: WishList[];
-  
-  @OneToMany(() => Rating, rating => rating.book)
+
+  @OneToMany(() => Rating, (rating) => rating.book)
   ratings: Rating[];
 }

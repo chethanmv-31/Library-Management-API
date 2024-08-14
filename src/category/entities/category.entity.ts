@@ -9,6 +9,18 @@ export class Category {
   @Column({ unique: true })
   category_name: string;
 
+  @Column()
+  created_at: Date;
+
+ @Column({nullable:true})
+  updated_at: Date;
+
+  @Column()
+  created_by: string;
+
+ @Column({nullable:true})
+  updated_by: string;
+
   @OneToMany((_type) => Book, (book) => book.category)
   books: Book[];
 }

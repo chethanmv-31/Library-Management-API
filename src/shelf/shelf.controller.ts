@@ -18,6 +18,8 @@ import { Roles } from 'src/auth/guards/role.decorator';
 import { Role } from 'src/auth/roles.model';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 import { ApiTags } from '@nestjs/swagger';
+import { GetUser } from 'src/auth/guards/get-user.decorator';
+import { User } from 'src/auth/entities/user.entity';
 @ApiTags('Shelf')
 @Controller('shelf')
 export class ShelfController {
@@ -26,8 +28,10 @@ export class ShelfController {
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
-  createCategory(@Body() createShelfDto: CreateShelfDto): Promise<Shelf> {
-    return this.shelfService.createShelf(createShelfDto);
+  createCategory(@Body() createShelfDto: CreateShelfDto,
+  @GetUser() user: User,
+): Promise<Shelf> {
+    return this.shelfService.createShelf(createShelfDto,user);
   }
 
   @Get()
@@ -57,7 +61,9 @@ export class ShelfController {
   updateShelfById(
     @Param('id') id: number,
     @Body() updateShelfDto: UpdateShelfDto,
+  @GetUser() user: User,
+
   ): Promise<Shelf> {
-    return this.shelfService.updateShelfById(id, updateShelfDto);
+    return this.shelfService.updateShelfById(id, updateShelfDto, user);
   }
 }

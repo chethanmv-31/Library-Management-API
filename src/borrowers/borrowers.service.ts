@@ -1,5 +1,9 @@
 import { CreateBorrowersDto } from './dto/create-borrowers.dto';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Borrowers } from './entities/borrowers.entity';
 import { BorrowersRepository } from './borrowers.repository';
 import { UpdateBorrowerStatus } from './dto/update-borrower-status.dto';
@@ -64,16 +68,15 @@ export class BorrowersService {
   async updateBorrowersById(
     id: number,
     createBorrowersDto: CreateBorrowersDto,
+    user: User,
   ): Promise<Borrowers> {
     const borrowers = await this.getBorrowersById(id);
     const { actual_Return_Date, borrowed_From, borrowed_TO } =
       createBorrowersDto;
-    // borrowers.borrower_name = borrower_name;
     borrowers.actual_Return_Date = actual_Return_Date;
     borrowers.borrowed_From = borrowed_From;
     borrowers.borrowed_TO = borrowed_TO;
     this.borrowersRepository.save(borrowers);
-
     return borrowers;
   }
 
@@ -85,7 +88,7 @@ export class BorrowersService {
     const borrowers = await this.getBorrowersById(id);
     const { status } = borrowerStatus;
     borrowers.status = status;
-    borrowers.issued_by = user;
+    borrowers.issued_by= user
     this.borrowersRepository.save(borrowers);
     return borrowers;
   }

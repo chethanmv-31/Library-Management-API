@@ -6,6 +6,7 @@ import {
 import { DataSource, Repository } from 'typeorm';
 import { Category } from './entities/category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()
 export class CategoryRepository extends Repository<Category> {
@@ -15,11 +16,15 @@ export class CategoryRepository extends Repository<Category> {
 
   async createCategory(
     createCategoryDto: CreateCategoryDto,
+    user: User,
   ): Promise<Category> {
     const { category_name } = createCategoryDto;
-    const binding = this.create({ category_name });
+
+    const category = this.create({ category_name });
+    category.created_at = new Date();
+    category.created_by = user.id;
     try {
-      await this.save(binding);
+      await this.save(category);
     } catch (error) {
       if (error.code == '23505') {
         throw new ConflictException('Category already exists');
@@ -28,7 +33,7 @@ export class CategoryRepository extends Repository<Category> {
       }
     }
 
-    return binding;
+    return category;
   }
 
   async getAllCategory(): Promise<Category[]> {

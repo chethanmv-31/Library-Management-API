@@ -40,6 +40,9 @@ export class AuthRepository extends Repository<User> {
     }
     const user = this.create(userData);
 
+    const date = new Date();
+    user.created_at = date;
+
     try {
       await this.save(user);
     } catch (error) {

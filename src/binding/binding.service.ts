@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { BindingRepository } from './binding.repository';
 import { Binding } from './entities/binding.entity';
 import { CreateBindingDto } from './create-binding.dto';
+import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()
 export class BindingService {
@@ -22,8 +23,11 @@ export class BindingService {
     return found;
   }
 
-  async createBindings(createBindingDto: CreateBindingDto): Promise<Binding> {
-    return await this.bindingRepository.createBinding(createBindingDto);
+  async createBindings(
+    createBindingDto: CreateBindingDto,
+    user: User,
+  ): Promise<Binding> {
+    return await this.bindingRepository.createBinding(createBindingDto, user);
   }
 
   async deleteBindingById(id: number): Promise<string> {
@@ -40,10 +44,14 @@ export class BindingService {
   async updateBindingById(
     id: number,
     createBindingDto: CreateBindingDto,
+    user: User,
   ): Promise<Binding> {
     const binding = await this.getBindingById(id);
     const { binding_name } = createBindingDto;
     binding.binding_name = binding_name;
+    binding.updated_at = new Date();
+    binding.updated_by = user.id;
+
     this.bindingRepository.save(binding);
     return binding;
   }

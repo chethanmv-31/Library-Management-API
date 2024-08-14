@@ -28,6 +28,18 @@ export class Borrowers {
   @Column()
   status: BorrowerStatus;
 
+  @Column()
+  created_at: Date;
+
+ @Column({nullable:true})
+  updated_at: Date;
+
+  @Column()
+  created_by: string;
+
+ @Column({nullable:true})
+  updated_by: string;
+
   @ManyToOne(() => Book, (book) => book.borrowerDetails)
   @JoinColumn()
   book: Book;

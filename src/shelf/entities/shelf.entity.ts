@@ -12,6 +12,18 @@ export class Shelf {
   @Column()
   Shelf_No: number;
 
+  @Column()
+  created_at: Date;
+
+  @Column({ nullable: true })
+  updated_at: Date;
+
+  @Column()
+  created_by: string;
+
+  @Column({ nullable: true })
+  updated_by: string;
+
   @OneToMany((_type) => Book, (book) => book.shelf)
   books: Book;
 }

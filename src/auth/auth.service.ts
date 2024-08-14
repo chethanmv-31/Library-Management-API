@@ -49,6 +49,7 @@ export class AuthService {
       throw new NotFoundException('Book not found');
     }
     user.profile_pic = imageUrl;
+    user.updated_at = new Date();
     return this.authRepository.save(user);
   }
 }

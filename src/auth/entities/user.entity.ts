@@ -31,6 +31,12 @@ export class User {
   @Column({ nullable: true })
   profile_pic: string;
 
+  @Column()
+  created_at: Date;
+
+ @Column({nullable:true})
+  updated_at: Date;
+
   @OneToMany((_type) => Borrowers, (borrower) => borrower.borrower, {
     eager: true,
   })

@@ -9,6 +9,8 @@ import { CreatePublisherDto } from './dto/create-publisher.dto';
 import { UpdatePublisherDto } from './dto/update-publisher.dto';
 import { Publisher } from './entities/publisher.entity';
 import { ApiTags } from '@nestjs/swagger';
+import { GetUser } from 'src/auth/guards/get-user.decorator';
+import { User } from 'src/auth/entities/user.entity';
 
 @ApiTags('Publisher')
 @Controller('publisher')
@@ -19,8 +21,10 @@ export class PublisherController {
   @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   createPublishers(@Body()  createPublisherDto: CreatePublisherDto,
+  @GetUser() user: User,
+
 ): Promise<Publisher>  {
-    return this.publisherService.createPublisher(createPublisherDto);
+    return this.publisherService.createPublisher(createPublisherDto,user);
   }
 
   @Get()
@@ -50,7 +54,9 @@ export class PublisherController {
   updatePublisherById(
     @Param('id') id: number,
     @Body()  createPublisherDto: CreatePublisherDto,
+  @GetUser() user: User,
+
 ): Promise<Publisher> {
-    return this.publisherService.updatePublisherById(id, createPublisherDto);
+    return this.publisherService.updatePublisherById(id, createPublisherDto, user);
   }
 }

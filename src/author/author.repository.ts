@@ -7,6 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
+import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()
 export class AuthorRepository extends Repository<Author> {
@@ -23,9 +24,15 @@ export class AuthorRepository extends Repository<Author> {
     return author;
   }
 
-  async createAuthor(createAuthorDto: CreateAuthorDto): Promise<Author> {
+  async createAuthor(
+    createAuthorDto: CreateAuthorDto,
+    user: User,
+  ): Promise<Author> {
     const { author_Name } = createAuthorDto;
     const author = this.create({ author_Name });
+    author.created_at = new Date();
+    author.created_by = user.id;
+
     await this.save(author);
 
     return author;
