@@ -96,9 +96,8 @@ export class BooksController {
   updateBook(
     @Param('id') id: string,
     @Body() updateBookDto: UpdateBookDto,
-    @Body() updateAuthorDto: CreateAuthorDto,
   ): Promise<Book> {
-    return this.booksService.updateBook(id, updateBookDto, updateAuthorDto);
+    return this.booksService.updateBook(id, updateBookDto);
   }
 
   @Post(':id/upload')

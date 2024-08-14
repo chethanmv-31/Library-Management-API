@@ -15,14 +15,31 @@ export class BorrowersService {
 
   async createBorrowers(
     createBorrowersDto: CreateBorrowersDto,
+    user: User,
   ): Promise<Borrowers> {
-    
-    return await this.borrowersRepository.createBorrowers(createBorrowersDto);
+    return await this.borrowersRepository.createBorrowers(
+      createBorrowersDto,
+      user,
+    );
   }
 
   async getBorrowersById(id: number): Promise<Borrowers> {
     const found = await this.borrowersRepository.findOne({
       where: { id: id },
+    });
+
+    if (!found) {
+      throw new NotFoundException(
+        `Borrowers is not found with this id '${id}'`,
+      );
+    }
+    return found;
+  }
+
+  async getBorrowDataByUserId(id: string): Promise<Borrowers[]> {
+    const found = await this.borrowersRepository.find({
+      where: { borrower:{id: id} },
+      // relations: ['user'],
     });
 
     if (!found) {
@@ -49,13 +66,14 @@ export class BorrowersService {
     createBorrowersDto: CreateBorrowersDto,
   ): Promise<Borrowers> {
     const borrowers = await this.getBorrowersById(id);
-    const { actual_Return_Date, borrowed_From, borrowed_TO, borrower_name } =
+    const { actual_Return_Date, borrowed_From, borrowed_TO } =
       createBorrowersDto;
-    borrowers.borrower_name = borrower_name;
+    // borrowers.borrower_name = borrower_name;
     borrowers.actual_Return_Date = actual_Return_Date;
     borrowers.borrowed_From = borrowed_From;
     borrowers.borrowed_TO = borrowed_TO;
     this.borrowersRepository.save(borrowers);
+
     return borrowers;
   }
 
@@ -63,12 +81,11 @@ export class BorrowersService {
     id: number,
     borrowerStatus: UpdateBorrowerStatus,
     user: User,
-
-  ): Promise<Borrowers> {    
+  ): Promise<Borrowers> {
     const borrowers = await this.getBorrowersById(id);
     const { status } = borrowerStatus;
     borrowers.status = status;
-    borrowers.issued_by= user
+    borrowers.issued_by = user;
     this.borrowersRepository.save(borrowers);
     return borrowers;
   }

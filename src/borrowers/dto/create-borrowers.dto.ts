@@ -1,9 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
 
 export class CreateBorrowersDto {
-  @IsNotEmpty()
-  borrower_name: string;
-
+ 
   @IsNotEmpty()
   borrowed_From: Date;
 

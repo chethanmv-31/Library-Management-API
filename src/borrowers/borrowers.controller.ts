@@ -33,8 +33,9 @@ export class BorrowersController {
   createBorrowers(
     @Body()
     createBorrowersDto: CreateBorrowersDto,
+    @GetUser() user: User,
   ): Promise<Borrowers> {
-    return this.borrowersService.createBorrowers(createBorrowersDto);
+    return this.borrowersService.createBorrowers(createBorrowersDto, user);
   }
 
   @Get()
@@ -44,6 +45,12 @@ export class BorrowersController {
     return this.borrowersService.getAllBorrowers();
   }
 
+  @Get('/:borrowerID')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.STUDENT, Role.CLERK, Role.LIBRARIAN)
+  getBorrowDataByUserId(@Param('borrowerID') id: string): Promise<Borrowers[]> {
+    return this.borrowersService.getBorrowDataByUserId(id);
+  }
   @Get('/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.STUDENT, Role.CLERK, Role.LIBRARIAN)

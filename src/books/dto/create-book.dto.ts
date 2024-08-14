@@ -19,7 +19,6 @@ export class CreateBookDto {
   isbn_no: string;
 
   @ApiProperty({ example: '1st Edition' })
-  @IsNotEmpty()
   edition: string;
 
   @ApiProperty({ example: 1 })
@@ -35,6 +34,7 @@ export class CreateBookDto {
   category_id: number;
 
   @ApiProperty({ example: 1 })
+  @IsNotEmpty()
   shelf_id: number;
 
   @ApiProperty({ example: 'English' })

@@ -24,16 +24,21 @@ export class User {
 
   @Column({ type: 'enum', enum: Role, default: Role.STUDENT })
   role: Role;
+
   @Column()
   password: string;
 
-  @Column({nullable:true})
-  profile_pic:string
+  @Column({ nullable: true })
+  profile_pic: string;
 
-  @OneToMany((_type) => Borrowers, (borrower) => borrower.user, { eager: true })
+  @OneToMany((_type) => Borrowers, (borrower) => borrower.borrower, {
+    eager: true,
+  })
   borrower: Borrowers[];
 
-  @OneToMany((_type) => Borrowers, (borrower) => borrower.user, { eager: true })
+  @OneToMany((_type) => Borrowers, (borrower) => borrower.borrower, {
+    eager: true,
+  })
   issues: Borrowers[];
 
   @OneToMany(() => WishList, (wishlist) => wishlist.user)

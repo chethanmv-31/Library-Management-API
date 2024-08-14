@@ -17,9 +17,6 @@ export class Borrowers {
   id: number;
 
   @Column()
-  borrower_name: string;
-
-  @Column()
   borrowed_From: Date;
 
   @Column()
@@ -31,16 +28,15 @@ export class Borrowers {
   @Column()
   status: BorrowerStatus;
 
- 
   @ManyToOne(() => Book, (book) => book.borrowerDetails)
   @JoinColumn()
   book: Book;
-  
+
   @ManyToOne(() => User, (user) => user.issues)
   @JoinColumn()
   issued_by: User;
 
   @ManyToOne((_type) => User, (user) => user.borrower, { eager: false })
   @Exclude({ toPlainOnly: true })
-  user: User;
+  borrower: User;
 }

@@ -1,10 +1,13 @@
 import {
+  IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { Role } from '../roles.model';
 
 export class AuthCredentialDto {
   @IsNotEmpty()
@@ -35,4 +38,8 @@ export class AuthCredentialDto {
     message: 'Invalid email address',
   })
   email: string;
+
+  @IsEnum(Role)
+  @IsOptional()
+  role: Role;
 }
