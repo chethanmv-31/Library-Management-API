@@ -44,8 +44,8 @@ export class BooksService {
     return found;
   }
 
-  createBook(createBookDto: CreateBookDto, file: string): Promise<Book> {
-    return this.bookRepository.createBook(createBookDto, file);
+  createBook(createBookDto: CreateBookDto, file: string, user:User): Promise<Book> {
+    return this.bookRepository.createBook(createBookDto, file,user);
   }
 
   async deleteBookById(id: string): Promise<string> {
