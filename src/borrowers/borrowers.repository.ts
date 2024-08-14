@@ -10,7 +10,6 @@ import { User } from 'src/auth/entities/user.entity';
 export class BorrowersRepository extends Repository<Borrowers> {
   constructor(
     private dataSource: DataSource,
-
     private bookService: BooksService,
   ) {
     super(Borrowers, dataSource.createEntityManager());
@@ -29,22 +28,22 @@ export class BorrowersRepository extends Repository<Borrowers> {
     createBorrowersDto: CreateBorrowersDto,
     user:User
   ): Promise<Borrowers> {
+    
     const {
       borrowed_From,
       borrowed_TO,
-      borrower_name,
       actual_Return_Date,
       book_id,
     } = createBorrowersDto;
     const borrowers = this.create({
       borrowed_From,
       borrowed_TO,
-      borrower_name,
       actual_Return_Date,
       status: BorrowerStatus.RESERVED,
     });
 
     const book = await this.bookService.getBookById(book_id);
+    borrowers.borrower = user;
     borrowers.book = book;
     borrowers.created_at = new Date();
     borrowers.created_by= user.id

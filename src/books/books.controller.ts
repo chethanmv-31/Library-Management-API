@@ -106,7 +106,7 @@ export class BooksController {
     @GetUser() user: User,
 
   ): Promise<Book> {
-    return this.booksService.updateBook(id, updateBookDto, updateAuthorDto,user);
+    return this.booksService.updateBook(id, updateBookDto,user);
   }
 
   @Post(':id/upload')

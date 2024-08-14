@@ -24,6 +24,7 @@ export class User {
 
   @Column({ type: 'enum', enum: Role, default: Role.STUDENT })
   role: Role;
+
   @Column()
   password: string;
 
@@ -36,10 +37,14 @@ export class User {
  @Column({nullable:true})
   updated_at: Date;
 
-  @OneToMany((_type) => Borrowers, (borrower) => borrower.user, { eager: true })
+  @OneToMany((_type) => Borrowers, (borrower) => borrower.borrower, {
+    eager: true,
+  })
   borrower: Borrowers[];
 
-  @OneToMany((_type) => Borrowers, (borrower) => borrower.user, { eager: true })
+  @OneToMany((_type) => Borrowers, (borrower) => borrower.borrower, {
+    eager: true,
+  })
   issues: Borrowers[];
 
   @OneToMany(() => WishList, (wishlist) => wishlist.user)

@@ -9,13 +9,21 @@ import { UpdateBookDto } from './dto/update-book.dto';
 import { CreateAuthorDto } from 'src/author/dto/create-author.dto';
 import { Author } from 'src/author/entities/author.entity';
 import { CreateBindingDto } from 'src/binding/dto/create-binding.dto';
+import { BindingService } from 'src/binding/binding.service';
+import { CategoryService } from 'src/category/category.service';
+import { PublisherService } from 'src/publisher/publisher.service';
+import { ShelfService } from 'src/shelf/shelf.service';
 import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()
 export class BooksService {
   constructor(
     private bookRepository: BooksRepository,
-    private authorRepository: AuthorRepository,
+    private authorService: AuthorService,
+    private bindingService: BindingService,
+    private categoryService: CategoryService,
+    private shelfService: ShelfService,
+    private publisherService: PublisherService,
   ) {}
 
   async getAllBooks(): Promise<Book[]> {
@@ -36,12 +44,8 @@ export class BooksService {
     return found;
   }
 
-  createBook(
-    createBookDto: CreateBookDto,
-    file: string,
-    user: User,
-  ): Promise<Book> {
-    return this.bookRepository.createBook(createBookDto, file, user);
+  createBook(createBookDto: CreateBookDto, file: string, user:User): Promise<Book> {
+    return this.bookRepository.createBook(createBookDto, file,user);
   }
 
   async deleteBookById(id: string): Promise<string> {
@@ -72,29 +76,39 @@ export class BooksService {
     }
   }
 
-  async updateBook(
-    id: string,
-    updateBookDto: UpdateBookDto,
-    updateAuthorDto: CreateAuthorDto,
-    user: User,
-  ): Promise<Book> {
-    const { isbn_no, title, price, no_of_copies, stock, edition, language } =
-      updateBookDto;
+  async updateBook(id: string, updateBookDto: UpdateBookDto, user: User,): Promise<Book> {
+    const {
+      isbn_no,
+      title,
+      price,
+      no_of_copies,
+      stock,
+      edition,
+      language,
+      author_id,
+      binding_id,
+      category_id,
+      publisher_id,
+      shelf_id,
+    } = updateBookDto;
 
     const book = await this.getBookById(id);
-
-    const author = await this.authorRepository.findOne({
-      where: {
-        author_Name: book.author.author_Name,
-      },
-    });
 
     if (!book) {
       throw new NotFoundException(`Book with id "${id}" is not found`);
     } else {
-      author.author_Name = updateAuthorDto.author_Name;
-      this.authorRepository.save(author);
-
+      const category = await this.categoryService.getCategoryById(category_id);
+      const author = await this.authorService.getAuthorById(author_id);
+      const binding = await this.bindingService.getBindingById(binding_id);
+      const shelf = await this.shelfService.getShelfById(shelf_id);
+      const publishers =
+        await this.publisherService.getPublisherById(publisher_id);
+        
+      book.author = author;
+      book.binding = binding;
+      book.category = category;
+      book.shelf = shelf;
+      book.publisher = publishers;
       book.stock = stock;
       book.isbn_no = isbn_no;
       book.title = title;

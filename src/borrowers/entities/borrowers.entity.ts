@@ -17,9 +17,6 @@ export class Borrowers {
   id: number;
 
   @Column()
-  borrower_name: string;
-
-  @Column()
   borrowed_From: Date;
 
   @Column()
@@ -53,5 +50,5 @@ export class Borrowers {
 
   @ManyToOne((_type) => User, (user) => user.borrower, { eager: false })
   @Exclude({ toPlainOnly: true })
-  user: User;
+  borrower: User;
 }

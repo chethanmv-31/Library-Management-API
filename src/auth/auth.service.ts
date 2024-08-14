@@ -23,10 +23,14 @@ export class AuthService {
   }
 
   async signIn(userSigninDto: UserSignInDto): Promise<{ accessToken: string }> {
-    const { username, password } = userSigninDto;
+    const { username, password, role } = userSigninDto;
     const user = await this.authRepository.findOne({ where: { username } });
 
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (
+      user &&
+      (await bcrypt.compare(password, user.password)) &&
+      user.role === role
+    ) {
       const payload = {
         username: user.username,
         sub: user.id,

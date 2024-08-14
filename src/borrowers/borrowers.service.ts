@@ -40,6 +40,20 @@ export class BorrowersService {
     return found;
   }
 
+  async getBorrowDataByUserId(id: string): Promise<Borrowers[]> {
+    const found = await this.borrowersRepository.find({
+      where: { borrower:{id: id} },
+      // relations: ['user'],
+    });
+
+    if (!found) {
+      throw new NotFoundException(
+        `Borrowers is not found with this id '${id}'`,
+      );
+    }
+    return found;
+  }
+
   async deleteBorrowersById(id: number): Promise<string> {
     const result = await this.borrowersRepository.delete({
       id,
@@ -56,24 +70,14 @@ export class BorrowersService {
     createBorrowersDto: CreateBorrowersDto,
     user: User,
   ): Promise<Borrowers> {
-    const { actual_Return_Date, borrowed_From, borrowed_TO, borrower_name } =
-      createBorrowersDto;
     const borrowers = await this.getBorrowersById(id);
-    if (borrowers.status === 'RESERVED') {
-      borrowers.borrower_name = borrower_name;
-      borrowers.actual_Return_Date = actual_Return_Date;
-      borrowers.borrowed_From = borrowed_From;
-      borrowers.borrowed_TO = borrowed_TO;
-      borrowers.updated_at = new Date();
-      borrowers.updated_by = user.id;
-
-      this.borrowersRepository.save(borrowers);
-      return borrowers;
-    } else {
-      throw new ForbiddenException(
-        'Not able to update the "ISSUED OR RETURNED" borrows',
-      );
-    }
+    const { actual_Return_Date, borrowed_From, borrowed_TO } =
+      createBorrowersDto;
+    borrowers.actual_Return_Date = actual_Return_Date;
+    borrowers.borrowed_From = borrowed_From;
+    borrowers.borrowed_TO = borrowed_TO;
+    this.borrowersRepository.save(borrowers);
+    return borrowers;
   }
 
   async updateBorrowerStatus(
@@ -84,9 +88,7 @@ export class BorrowersService {
     const borrowers = await this.getBorrowersById(id);
     const { status } = borrowerStatus;
     borrowers.status = status;
-    borrowers.issued_by = user;
-    borrowers.updated_at = new Date();
-
+    borrowers.issued_by= user
     this.borrowersRepository.save(borrowers);
     return borrowers;
   }
