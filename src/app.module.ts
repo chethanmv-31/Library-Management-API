@@ -3,22 +3,17 @@ import { BooksModule } from './books/books.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-
-import { ConfigValidationSchema } from './schema-validation';
 import { AuthorModule } from './author/author.module';
 import { BindingModule } from './binding/binding.module';
 import { CategoryModule } from './category/category.module';
-
 import { BorrowersModule } from './borrowers/borrowers.module';
 import { ShelfModule } from './shelf/shelf.module';
-import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from './auth/guards/role-auth.guard';
-import { JwtAuthGuard } from './auth/jwt/jwt-auth.guard';
 import { WishlistModule } from './whishlist/wishlist.module';
 import { PublisherModule } from './publisher/publisher.module';
 import { RatingsModule } from './ratings/ratings.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
@@ -44,6 +39,17 @@ import { join } from 'path';
           password: configService.get('DB_PASSWORD'),
           database: configService.get('DB_DATABASE'),
         };
+      },
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+          user: 'chethan.makodu@gmail.com',
+          pass: 'qvtv pfjf agxi ffoc',
+        },
       },
     }),
     BooksModule,

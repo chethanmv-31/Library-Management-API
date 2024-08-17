@@ -110,6 +110,7 @@ export class BooksController {
   }
 
   @Post(':id/upload')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
   @UseInterceptors(FileInterceptor('image'))
   async uploadBookImage(
