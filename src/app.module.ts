@@ -24,6 +24,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
     ConfigModule.forRoot({
       // validationSchema: ConfigValidationSchema,
       envFilePath: [`.env.stage.${process.env.STAGE}`],
+      isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -41,16 +42,19 @@ import { MailerModule } from '@nestjs-modules/mailer';
         };
       },
     }),
-    MailerModule.forRoot({
-      transport: {
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
-        auth: {
-          user: 'chethan.makodu@gmail.com',
-          pass: 'qvtv pfjf agxi ffoc',
+    MailerModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        transport: {
+          host: configService.get('MAIL_HOST'),
+          port: configService.get('MAIL_PORT'),
+          secure: false,
+          auth: {
+            user: configService.get('MAIL_USER'),
+            pass: configService.get('MAIL_PASS'),
+          },
         },
-      },
+      }),
     }),
     BooksModule,
     AuthModule,

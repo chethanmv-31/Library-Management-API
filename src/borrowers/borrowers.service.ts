@@ -21,29 +21,29 @@ export class BorrowersService {
     private readonly borrowersRepository: BorrowersRepository,
     private readonly mailerService: MailerService,
   ) {
-    this.scheduleTaskInThreeMinutes();
+    // this.scheduleTaskInThreeMinutes();
   }
 
-  private scheduleTaskInThreeMinutes() {
-    const now = new Date();
-    const delay = 1 * 60 * 1000; // 3 minutes in milliseconds
-    const executionTime = new Date(now.getTime() + delay);
+  // private scheduleTaskInThreeMinutes() {
+  //   const now = new Date();
+  //   const delay = 1 * 60 * 1000; // 3 minutes in milliseconds
+  //   const executionTime = new Date(now.getTime() + delay);
 
-    const timeoutId = setTimeout(() => {
-      this.handleTask();
-    }, delay);
+  //   const timeoutId = setTimeout(() => {
+  //     this.handleTask();
+  //   }, delay);
 
-    this.logger.log(`Task scheduled to run at ${executionTime}`);
-  }
+  //   this.logger.log(`Task scheduled to run at ${executionTime}`);
+  // }
 
-  private handleTask() {
-    // Your task logic here
-    this.logger.log('Task is running!');
-    this.sendDueDateReminderEmails();
+  // private handleTask() {
+  //   // Your task logic here
+  //   this.logger.log('Task is running!');
+  //   this.sendDueDateReminderEmails();
 
-    // If you want to reschedule every 3 minutes:
-    this.scheduleTaskInThreeMinutes();
-  }
+  //   // If you want to reschedule every 3 minutes:
+  //   this.scheduleTaskInThreeMinutes();
+  // }
 
   async getAllBorrowers(): Promise<Borrowers[]> {
     return await this.borrowersRepository.getAllBorrowers();
@@ -155,7 +155,7 @@ export class BorrowersService {
     this.updateOverdueFines();
   }
 
-  // @Cron('0 0 * * *')
+  @Cron('0 8 * * *')
   async sendDueDateReminderEmails() {
     const today = new Date();
     const reminderDate = new Date(today);
@@ -198,7 +198,7 @@ export class BorrowersService {
                <div style="margin: 20px 0;">
                <p style="font-weight: 800; font-size: 18px; color: #333;">${bookTitle}</p>
                <img src="${imageUrl}" alt="Book Cover" style="max-width: 100%; height: auto;" />
-              <p style="font-weight: 800; font-size: 18px; color: #333;">Due Date: ${dueDate}</p>
+              <p style="font-weight: 800; font-size: 18px; color: #333;">Due Date: ${formattedDueDate}</p>
              </div>
              <p>Please return it on time to avoid any overdue fines.</p>
              </div>`,
