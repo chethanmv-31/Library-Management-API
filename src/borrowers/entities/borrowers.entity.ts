@@ -22,22 +22,28 @@ export class Borrowers {
   @Column()
   borrowed_TO: Date;
 
-  @Column()
+  @Column({ type: 'date', nullable: true })
   actual_Return_Date: Date;
 
   @Column()
   status: BorrowerStatus;
 
+  @Column({ nullable: true, type: 'decimal' })
+  days_overdue: number;
+
+  @Column({ nullable: true, type: 'int' })
+  fine: number;
+
   @Column()
   created_at: Date;
 
- @Column({nullable:true})
+  @Column({ nullable: true })
   updated_at: Date;
 
   @Column()
   created_by: string;
 
- @Column({nullable:true})
+  @Column({ nullable: true })
   updated_by: string;
 
   @ManyToOne(() => Book, (book) => book.borrowerDetails)

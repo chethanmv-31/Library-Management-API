@@ -44,8 +44,12 @@ export class BooksService {
     return found;
   }
 
-  createBook(createBookDto: CreateBookDto, file: string, user:User): Promise<Book> {
-    return this.bookRepository.createBook(createBookDto, file,user);
+  createBook(
+    createBookDto: CreateBookDto,
+    file: string,
+    user: User,
+  ): Promise<Book> {
+    return this.bookRepository.createBook(createBookDto, file, user);
   }
 
   async deleteBookById(id: string): Promise<string> {
@@ -76,7 +80,11 @@ export class BooksService {
     }
   }
 
-  async updateBook(id: string, updateBookDto: UpdateBookDto, user: User,): Promise<Book> {
+  async updateBook(
+    id: string,
+    updateBookDto: UpdateBookDto,
+    user: User,
+  ): Promise<Book> {
     const {
       isbn_no,
       title,
@@ -103,7 +111,7 @@ export class BooksService {
       const shelf = await this.shelfService.getShelfById(shelf_id);
       const publishers =
         await this.publisherService.getPublisherById(publisher_id);
-        
+
       book.author = author;
       book.binding = binding;
       book.category = category;
@@ -129,12 +137,11 @@ export class BooksService {
     imageUrl: string,
     user: User,
   ): Promise<Book> {
-    const book = await this.bookRepository.findOne({ where: { id } });
-    if (!book) {
-      throw new NotFoundException('Book not found');
-    }
+    const book = await this.getBookById(id);
+
+
     book.image = imageUrl;
-    book.updated_by = user.id;
-    return this.bookRepository.save(book);
+    book.updated_by = user?.id;
+    return await this.bookRepository.save(book);
   }
 }
