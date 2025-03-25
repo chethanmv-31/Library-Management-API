@@ -43,18 +43,11 @@ export class BooksController {
   ) {}
 
   @Get()
-  @Roles(Role.STUDENT)
-  @Roles(Role.ADMIN)
-  @Roles(Role.CLERK)
-  @Roles(Role.LIBRARIAN)
-  @UseGuards(JwtAuthGuard, RolesGuard)
   getAllBooks() {
     return this.booksService.getAllBooks();
   }
 
   @Get('/:id')
-  @Roles(Role.ADMIN, Role.STUDENT, Role.CLERK, Role.LIBRARIAN)
-  @UseGuards(JwtAuthGuard, RolesGuard)
   getBookById(@Param('id') id: string): Promise<Book> {
     return this.booksService.getBookById(id);
   }
@@ -63,7 +56,6 @@ export class BooksController {
   @Roles(Role.ADMIN, Role.CLERK, Role.LIBRARIAN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @UseInterceptors(FileInterceptor('image'))
-  
   async createBook(
     @Body() createBookDto: CreateBookDto,
     @UploadedFile() image: Express.Multer.File,

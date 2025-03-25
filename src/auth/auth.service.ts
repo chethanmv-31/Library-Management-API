@@ -46,7 +46,7 @@ export class AuthService {
   async updateProfilePic(id: string, imageUrl: string): Promise<User> {
     const user = await this.authRepository.findOne({ where: { id } });
     if (!user) {
-      throw new NotFoundException('Book not found');
+      throw new NotFoundException('User not found');
     }
     user.profile_pic = imageUrl;
     user.updated_at = new Date();
