@@ -5,7 +5,6 @@ import {
   Get,
   Logger,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
   UploadedFile,
@@ -15,19 +14,14 @@ import {
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { Book } from './entities/book.entity';
-import { BookStock } from './dto/books.model';
 import { UpdateBookSStock } from './dto/update-book-stock.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { CreateAuthorDto } from 'src/author/dto/create-author.dto';
-import { CreateBindingDto } from 'src/binding/dto/create-binding.dto';
-import { AuthGuard } from '@nestjs/passport';
 import { Role } from 'src/auth/roles.model';
 import { Roles } from 'src/auth/guards/role.decorator';
 import { RolesGuard } from 'src/auth/guards/role-auth.guard';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { extname } from 'path';
-import { diskStorage } from 'multer';
 import { S3Service } from 'src/s3Service';
 import { ApiTags } from '@nestjs/swagger';
 import { GetUser } from 'src/auth/guards/get-user.decorator';
@@ -82,10 +76,9 @@ export class BooksController {
     @Param('id') id: string,
     @Body() updateBookStock: UpdateBookSStock,
     @GetUser() user: User,
-
   ): Promise<Book> {
     const { stock } = updateBookStock;
-    return this.booksService.updateBookStock(id, stock,user);
+    return this.booksService.updateBookStock(id, stock, user);
   }
 
   @Patch('/:id')
@@ -96,9 +89,8 @@ export class BooksController {
     @Body() updateBookDto: UpdateBookDto,
     @Body() updateAuthorDto: CreateAuthorDto,
     @GetUser() user: User,
-
   ): Promise<Book> {
-    return this.booksService.updateBook(id, updateBookDto,user);
+    return this.booksService.updateBook(id, updateBookDto, user);
   }
 
   @Post(':id/upload')
@@ -109,7 +101,6 @@ export class BooksController {
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
     @GetUser() user: User,
-
   ) {
     const imageUrl = await this.s3Service.uploadFile(file, 'book-images');
     return this.booksService.updateBookImage(id, imageUrl, user);
