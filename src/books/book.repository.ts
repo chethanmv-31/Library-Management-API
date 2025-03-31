@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Book } from './entities/book.entity';
 import { CreateBookDto } from './dto/create-book.dto';
@@ -9,6 +9,14 @@ import { CategoryService } from 'src/category/category.service';
 import { ShelfService } from 'src/shelf/shelf.service';
 import { PublisherService } from 'src/publisher/publisher.service';
 import { User } from 'src/auth/entities/user.entity';
+import { Author } from 'src/author/entities/author.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Category } from 'src/category/entities/category.entity';
+import { AuthorRepository } from 'src/author/author.repository';
+import { CategoryRepository } from 'src/category/category.repository';
+import { BindingRepository } from 'src/binding/binding.repository';
+import { ShelfRepository } from 'src/shelf/shelf.repository';
+import { PublisherRepository } from 'src/publisher/publisher.repository';
 
 @Injectable()
 export class BooksRepository extends Repository<Book> {
@@ -19,6 +27,11 @@ export class BooksRepository extends Repository<Book> {
     private categoryService: CategoryService,
     private shelfService: ShelfService,
     private publisherService: PublisherService,
+    private authorRepository: AuthorRepository,
+    private categoryRepository: CategoryRepository,
+    private bindingRepository: BindingRepository,
+    private shelfRepository: ShelfRepository,
+    private publisherRepository: PublisherRepository,
   ) {
     super(Book, dataSource.createEntityManager());
   }
@@ -34,24 +47,85 @@ export class BooksRepository extends Repository<Book> {
       isbn_no,
       title,
       price,
-      binding_id,
-      author_id,
       no_of_copies,
       edition,
       language,
-      shelf_id,
-      category_id,
       publisher_id,
+      author_id,
+      authorName,
+      category_id,
+      categoryName,
+      binding_id,
+      bindingName,
+      shelf_id,
+      shelfNo,
+      floorNo,
+      publisherName,
     } = createBookDto;
 
+    let author;
+    if (author_id) {
+      author = await this.authorService.getAuthorById(author_id);
+    } else if (authorName) {
+      const authorDto = { author_Name: authorName };
+      author = await this.authorRepository.createAuthor(authorDto, user);
+    }
+    if (!author) {
+      throw new NotFoundException('Author not found or could not be created');
+    }
 
-    
-    const category = await this.categoryService.getCategoryById(category_id);
-    const author = await this.authorService.getAuthorById(author_id);
-    const binding = await this.bindingService.getBindingById(binding_id);
-    const shelf = await this.shelfService.getShelfById(shelf_id);
-    const publishers =
-      await this.publisherService.getPublisherById(publisher_id);
+    let category;
+    if (category_id) {
+      category = await this.categoryService.getCategoryById(category_id);
+    } else if (categoryName) {
+      const categoryDto = { category_name: categoryName };
+      category = await this.categoryRepository.createCategory(
+        categoryDto,
+        user,
+      );
+    }
+    if (!category) {
+      throw new NotFoundException('Category not found or could not be created');
+    }
+
+    let binding;
+    if (binding_id) {
+      binding = await this.bindingService.getBindingById(binding_id);
+    } else if (bindingName) {
+      const bindingDto = { binding_name: bindingName };
+      binding = await this.bindingRepository.createBinding(bindingDto, user);
+    }
+    if (!binding) {
+      throw new NotFoundException('Binding not found or could not be created');
+    }
+
+    let shelf;
+    if (shelf_id) {
+      shelf = await this.shelfService.getShelfById(shelf_id);
+    } else if (shelfNo || floorNo) {
+      const shelfDto = { Shelf_No: shelfNo, Floor_No: floorNo };
+      shelf = await this.shelfRepository.createShelf(shelfDto, user);
+    }
+
+    if (!shelf) {
+      throw new NotFoundException('Shelf not found or could not be created');
+    }
+
+    let publisher;
+    if (publisher_id) {
+      publisher = await this.publisherService.getPublisherById(publisher_id);
+    } else if (publisherName) {
+      const publisherDto = { publisher_name: publisherName };
+      publisher = await this.publisherRepository.createPublisher(
+        publisherDto,
+        user,
+      );
+    }
+    if (!publisher) {
+      throw new NotFoundException(
+        'Publisher not found or could not be created',
+      );
+    }
 
     const book = this.create({
       isbn_no,
@@ -67,7 +141,7 @@ export class BooksRepository extends Repository<Book> {
     book.binding = binding;
     book.category = category;
     book.shelf = shelf;
-    book.publisher = publishers;
+    book.publisher = publisher;
     book.image = file;
     book.created_at = new Date();
     await this.save(book);
