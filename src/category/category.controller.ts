@@ -36,8 +36,6 @@ export class CategoryController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.STUDENT, Role.CLERK, Role.LIBRARIAN)
   async getCategory(): Promise<Category[]> {
     return await this.categoryService.getCategory();
   }
@@ -63,8 +61,7 @@ export class CategoryController {
     @Param('id') id: number,
     @Body() createCategoryDto: CreateCategoryDto,
     @GetUser() user: User,
-
   ): Promise<Category> {
-    return this.categoryService.updateCategoryById(id, createCategoryDto,user);
+    return this.categoryService.updateCategoryById(id, createCategoryDto, user);
   }
 }

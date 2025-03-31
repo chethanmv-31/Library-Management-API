@@ -1,12 +1,8 @@
-import { CreateAuthorDto } from 'src/author/dto/create-author.dto';
 import { Injectable, Logger } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Book } from './entities/book.entity';
 import { CreateBookDto } from './dto/create-book.dto';
 import { BookStock } from './dto/books.model';
-import { AuthorRepository } from 'src/author/author.repository';
-import { BindingRepository } from 'src/binding/binding.repository';
-import { CreateBindingDto } from 'src/binding/dto/create-binding.dto';
 import { AuthorService } from 'src/author/author.service';
 import { BindingService } from 'src/binding/binding.service';
 import { CategoryService } from 'src/category/category.service';
@@ -85,10 +81,10 @@ export class BooksRepository extends Repository<Book> {
       .leftJoinAndSelect('book.category', 'category');
     try {
       const books = await query.getMany();
-      this.logger.verbose(`Success to get tasks`);
+      this.logger.verbose(`Success to get books`);
       return books;
     } catch (error) {
-      this.logger.error(`Failed to get tasks`, error.stack);
+      this.logger.error(`Failed to get books`, error.stack);
     }
   }
 }

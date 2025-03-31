@@ -14,6 +14,7 @@ import { RatingsModule } from './ratings/ratings.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { MailerModule } from '@nestjs-modules/mailer';
+import {SubcategoryModule} from './subcategory/subcategory.module';
 
 @Module({
   imports: [
@@ -66,6 +67,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
     WishlistModule,
     PublisherModule,
     RatingsModule,
+    SubcategoryModule,
   ],
 })
 export class AppModule {}

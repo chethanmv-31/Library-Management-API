@@ -6,8 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BookStock } from '../dto/books.model';
-import { User } from 'src/auth/entities/user.entity';
-import { Exclude } from 'class-transformer';
+
 import { Author } from 'src/author/entities/author.entity';
 import { Binding } from 'src/binding/entities/binding.entity';
 import { Category } from 'src/category/entities/category.entity';
@@ -16,6 +15,7 @@ import { Shelf } from 'src/shelf/entities/shelf.entity';
 import { WishList } from 'src/whishlist/entities/wishlist.entity';
 import { Publisher } from 'src/publisher/entities/publisher.entity';
 import { Rating } from 'src/ratings/entities/rating.entities';
+import { Subcategory } from 'src/subcategory/entities/subcategory.entity';
 
 @Entity()
 export class Book {
@@ -105,4 +105,7 @@ export class Book {
 
   @OneToMany(() => Rating, (rating) => rating.book)
   ratings: Rating[];
+
+  @ManyToOne(() => Subcategory, (subcategory) => subcategory.books)
+  subcategory: Subcategory;
 }
