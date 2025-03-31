@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateBookDto {
   @ApiProperty({ example: 'The Great Gatsby' })
@@ -34,10 +34,33 @@ export class CreateBookDto {
   category_id: number;
 
   @ApiProperty({ example: 1 })
-  @IsNotEmpty()
   shelf_id: number;
 
   @ApiProperty({ example: 'English' })
   @IsNotEmpty()
   language: string;
+
+  @IsOptional()
+  @IsString()
+  authorName: string; // Accept author as name
+
+  @IsOptional()
+  @IsString()
+  categoryName?: string;
+
+  @IsOptional()
+  @IsString()
+  bindingName?: string;
+
+  @IsOptional()
+  @IsString()
+  shelfNo?: number;
+
+  @IsOptional()
+  @IsString()
+  floorNo?: number;
+
+  @IsOptional()
+  @IsString()
+  publisherName?: string;
 }
